@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartera de Proyectos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/da5c0d66d8.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="ccs/style.css" rel="stylesheet">
+    <link href="ccs/carousel.css" rel="stylesheet">
+</head>
+<body>
+  <!--  --------------- Inicio Barra de Menu -----------------------    -->
+  <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top" aria-label="Tenth navbar example">
+            <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- comentario html -->
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+                  
+                    <div class="logo-titulo">
+                      <a href="#" class="d-flex align-items-center col-md-8 mb-2 mb-md-2 text-decoration-none text-warning">
+                      <img src="img/logo.png" class="logo-nav" alt="">
+                      Cartera de Proyectos
+                      </a>
+                    </div> 
+
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 link-secondary text-white">Inicio</a></li>
+                    <li><a href="#" class="nav-link px-2 link-secondary text-white">Nosotros</a></li>
+                    <li><a href="#" class="nav-link px-2 link-secondary text-white">Busqueda</a></li>
+                    <li><a href="#" class="nav-link px-2 link-secondary text-white">Contacto</a></li>
+                    <li><a href="#" class="nav-link px-2 link-secondary text-white">Donación</a></li>
+                </ul>
+                <div class="col-md-4 text-end">
+                    <a type="button" href="#" class="btn btn-outline-primary me-2 btn-sm">Iniciar Sesión</a>
+                    <a type="button" href="#" class="btn btn-outline-primary me-2 btn-sm">Registrarse</a>
+                </div>
+            </div>
+            </div>
+        </nav>
+    </header>
+    <!-- ------------------------ Fin Barra de Menu ------------------ -->
+    <!-- --------------------- Contenido de Pagina ----------------- -->
+    <main class="d-flex flex-column bd-highlight mb-3">
+      <!-- --------------------Inicio de Banner-------------------   -->
+      <div class="banner" style="background-image: url(img/banner.jpg);">
+          <div id="myCarousel" class="carousel carousel-dark slide mb-6" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" data-interval="300"></button>
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" data-interval="300"></button>
+              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" data-interval="300"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="d-flex bd-highlight">
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                  <div class="marco-img p-2 flex-fill bd-highlight">
+                      <img class="rounded float-end h-100" src="img/instagram.png" aria-hidden="true" focusable="false" alt="">
+                  </div>
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                </div>
+                <div class="container">
+                  <div class="carousel-caption text-start">
+                    <h1>Titulo 1</h1>
+                    <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
+                    <p><a class="btn btn-primary btn-sm" href="#">Sign up today</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="d-flex bd-highlight">
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                  <div class="marco-img p-2 flex-fill bd-highlight">
+                      <img class="rounded mx-auto d-block h-100" src="img/instagram.png" aria-hidden="true" focusable="false" alt="">
+                  </div>
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                </div>
+                <div class="container">
+                  <div class="carousel-caption">
+                    <h1>Titulo 2</h1>
+                    <p class="opacity-75">Some representative placeholder content for the second slide of the carousel.</p>
+                    <p><a class="btn btn-primary btn-sm" href="#">Learn more</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="d-flex bd-highlight">
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                  <div class="marco-img p-2 flex-fill bd-highlight">
+                      <img class="rounded float-start h-100" src="img/instagram.png" aria-hidden="true" focusable="false" alt="">
+                  </div>
+                  <div class="p-2 flex-fill bd-highlight"></div>
+                </div>
+                <div class="container">  
+                  <div class="carousel-caption text-end">
+                    <h1>Titulo 3</h1>
+                    <p class="opacity-75">Some representative placeholder content for the third slide of this carousel.</p>
+                    <p><a class="btn btn-primary btn-sm" href="#">Browse gallery</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div> 
+        </div>
+        <!-- --------------------FIN de Banner-------------------   -->
+        <!-- --------------------Inicio los Mejores Portafolios -------------------   --> 
+        <div class="container los-mejores">
+          <div class="row">
+            <div class="col-lg-3">
+              <img class="rounded-circle" width="140" height="140" src="img/facebook.png" alt="">
+              <h2 class="fw-normal">Proyecto 1</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam a magnam atque accusamus eveniet, in iure culpa laudantium. Pariatur inventore neque distinctio corrupti, at provident reiciendis ex ad necessitatibus ipsa.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-3">
+              <img class="rounded-circle" width="140" height="140" src="img/gorjeo.png" alt="">
+              <h2 class="fw-normal">Proyecto 2</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, voluptate? Libero deleniti eligendi adipisci quisquam velit voluptatem aperiam rerum assumenda voluptatibus quam? Sint, veritatis esse exercitationem odio inventore suscipit recusandae.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-3">
+              <img class="rounded-circle" width="140" height="140" src="img/instagram.png" alt="">
+              <h2 class="fw-normal">Proyecto 3</h2>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores laudantium fugit eaque et delectus expedita. Labore quasi eveniet corporis, non saepe natus odio adipisci cumque quod amet, provident reprehenderit in.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-3">
+              <img class="rounded-circle" width="140" height="140" src="img/facebook.png" alt="">
+              <h2 class="fw-normal">Proyecto 4</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nemo cum a hic temporibus asperiores eaque suscipit atque doloremque obcaecati mollitia rem, similique sed quam officia nihil eius expedita ipsam.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+          </div><!-- /.row -->
+        </div>
+        <!-- --------------------Fin los Mejores Portafolios -------------------   --> 
+        <!-- -------------------- INICIO Noticias------------------------ -->
+        <div class="varios-main container">
+          <div class="row justify-content-md-center">
+              <div class="col-md-7 justify-content-center align-middle">
+                <h4 class="featurette-heading fw-normal">First featurette heading.<span class="text-secondary">It ll blow your mind.</span></h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam alias quibusdam tempore nam facilis sint! Libero excepturi magni nihil quis facilis, cum eum sed repudiandae quaerat molestiae rerum ex incidunt.</p>
+              </div>
+              <div class="col-md-3">
+                <img class="img-fluid rounded float-end d-block" src="img/instagram.png" aria-hidden="true" focusable="false" alt="">
+              </div>
+          </div>
+        </div>
+        <!-- -------------------- FIN Noticias------------------------ -->
+    </main>    
+    <!-- --------------------- Contenido de Pagina ----------------- -->
+    <!-- --------------------- Inicio de Footer -------------------- -->
+    <footer class="footer mx-auto py-1 bg-dark">
+      <div class="container-fluid text-muted">
+        <div class="row">
+          <div class="col-5">
+            <div class="logo-titulo">  
+            <a href="#" class="legales d-flex align-items-center text-decoration-none">
+              <img
+                class="logo-foot"
+                src="img/logo.png"
+                alt="Logo Carpeta de Proyecto"
+              />
+              Cartera de Proyectos. Todos los derechos reservados, <br>2023 Argentina License.           
+            </a>
+            </div>
+          </div>
+          <div class="col-2">
+            <ul class="lista-institucional d-flex">
+              <li>
+                <a href="#"><i class="fa-brands fa-square-twitter fa-xl" style="color: #0293e2;"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-brands fa-square-facebook fa-xl" style="color: #0293e2;"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-brands fa-square-instagram fa-xl" style="color: #0293e2;"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <p class="float-end mb-2">
+              <a href="#"><i class="fa-solid fa-circle-up"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- --------------------- Fin de Footer -------------------- -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>  
+</body>
+</html>
