@@ -1,11 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Curso de Django</title>
-  </head>
-  <body>
-    <h1>Este es el curso de Django <b>Año 2023 </b> Fecha: {{ahora | date:"d-m-y"}} y Hora: {{ahora | date:"h:m:s"}}</h1>
-  </body>
-</html>
+{% extends "portal/portal_base.html" %}
+{%load static%}
+{%block titulo %}Cartera de Proyectos{% endblock titulo %}
+{%block contenido_principal%}
+{%include "portal/banner.html"%}
+<main class="d-flex flex-column bd-highlight mb-3">
+<div class="container los-mejores">
+  <div class="row">
+    <h4 class="fw-blond p-2 text-center">Proyectos<span class="text-secondary"> Nuevos</span></h4>
+    {% for nov in novedades %}
+      <div class="col-lg-3 m-0">
+        <img class="rounded-circle" width="140" height="140" src="{% static nov.url_icono %}" alt="">
+        <h4 class="fw-blond">{{ nov.nombre | capfirst}} {{ nov.codigo }}</h4>
+        <p>Usuario: {{ nov.usuario | capfirst}}</p>
+        <p>Fecha: {{ nov.fecha | date:"d F Y" }}</p>
+        <p>Descripción: {{ nov.detalle }}</p>
+        <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+    {% endfor %}
+  </div><!-- /.row -->
+</div>
+<!-- --------------------Fin los Mejores Portafolios -------------------   --> 
+<!-- -------------------- INICIO Noticias------------------------ -->
+<div class="varios-main container">
+  <div class="row justify-content-md-center">
+      <div class="col-md-7 justify-content-center align-middle">
+        <h4 class="featurette-heading fw-normal">First featurette heading.<span class="text-secondary">It ll blow your mind.</span></h4>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam alias quibusdam tempore nam facilis sint! Libero excepturi magni nihil quis facilis, cum eum sed repudiandae quaerat molestiae rerum ex incidunt.</p>
+      </div>
+      <div class="col-md-3">
+        <img class="img-fluid rounded float-end d-block" src="{% static "portal/img/instagram.png" %}" aria-hidden="true" focusable="false" alt="">
+      </div>
+  </div>
+</div>
+{% comment %} </main> {% endcomment %}
+<!-- -------------------- FIN Noticias------------------------ -->
+{% endblock contenido_principal%}

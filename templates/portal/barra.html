@@ -1,0 +1,30 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top" aria-label="Tenth navbar example">
+    <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- comentario html -->
+    <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+          
+            <div class="logo-titulo">
+              <a href="#" class="d-flex align-items-center col-md-8 mb-2 mb-md-2 text-decoration-none text-warning">
+              <img src="{% static "portal/img/logo.png" %}" class="logo-nav" alt="">
+              Cartera de Proyectos
+              </a>
+            </div> 
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2 link-secondary text-white">Inicio</a></li>
+            <li><a href="{% url "busqueda" %}" class="nav-link px-2 link-secondary text-white">Busqueda</a></li>
+            <li><a href="{% url "colaboracion" %}" class="nav-link px-2 link-secondary text-white">Colaboracion</a></li>
+            <li><a href="{% url "nosotros" %}" class="nav-link px-2 link-secondary text-white">Nosotros</a></li>
+            <li><a href="{% url "administracion" %}" class="nav-link px-2 link-secondary text-white">Administración</a></li>
+        </ul>
+        <div class="col-md-4 text-end">
+            <a type="button" href="{% url "sesion" %}" class="btn btn-outline-primary me-2 btn-sm">Iniciar Sesión</a>
+            <a type="button" href="{% url "registrar" %}" class="btn btn-outline-primary me-2 btn-sm">Registrarse</a>
+        </div>
+    </div>
+    </div>
+</nav>

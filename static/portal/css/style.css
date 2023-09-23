@@ -1,0 +1,127 @@
+
+  body {
+    padding-top: 3rem;
+    padding-bottom: 0rem;
+    background-color: #dfe5f0;
+  }
+ 
+ main{
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background-color: #dfe5f0;
+ }  
+
+ .banner{
+    height: 20rem;
+}
+
+.varios-main{
+    height: auto;
+}
+
+footer{
+    background-color: #333;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+footer a{
+    color: #0293e2 ;
+}
+
+img.logo-nav {
+    max-width: none !important;
+    width: 50px;
+}
+
+.nav {
+    font-family: 'Ubuntu', sans-serif;
+} 
+
+.logo-titulo{
+    line-height: 1;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+img.logo-foot {
+    max-width: none !important;
+    width: 40px;
+}
+
+a.legales {
+    margin: 6px 0 0 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 1;
+}
+
+p.legales {
+    margin: 12px 0 0 0;
+    font-family: 'OpenSans', Helvetica, sans-serif;
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 1.5;
+}
+
+ul.lista-institucional {
+    flex-direction: row;
+    justify-content:space-around;
+    padding-top: 5px;
+    width: 100%;
+    padding-left: 100px;
+    list-style: none;
+}
+
+.error{
+    color: red;
+    font-size: 12px;
+}
+
+.alert-error {
+    --bs-alert-color: #efebdd;
+    --bs-alert-bg: #d32b0a;
+    --bs-alert-border-color: #d32b0a;
+}
+
+.los-mejores .col-lg-3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0rem;
+    text-align: center;
+    padding: 0;
+  }
+  .los-mejores .col-lg-3 p {
+    margin-right: .75rem;
+    margin-left: .75rem;
+  }
+  
+  .featurette-divider {
+    margin: 2rem 0;
+  }
+  
+  .featurette-heading {
+    letter-spacing: -.05rem;
+  }
+
+  /* RESPONSIVE CSS -------------------------------------------------- */
+
+@media (min-width: 40em) {
+
+    .carousel-caption p {
+      margin-bottom: 1.25rem;
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+  
+    .featurette-heading {
+      font-size: 50px;
+    }
+  }
+  
+  @media (min-width: 62em) {
+    .featurette-heading {
+      margin-top: 2rem;
+    }
+  }

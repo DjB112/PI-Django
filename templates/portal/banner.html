@@ -1,0 +1,68 @@
+{% load static %}
+<div class="banner" style="background-image: url( '{% static "portal/img/banner.jpg" %}');">
+    <div id="myCarousel" class="carousel carousel-dark slide mb-6" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" data-interval="300"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" data-interval="300"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" data-interval="300"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight"></div>
+            <div class="marco-img p-2 flex-fill bd-highlight">
+                <img class="rounded float-end h-100" src="{% static "portal/img/instagram.png" %}" aria-hidden="true" focusable="false" alt="">
+            </div>
+            <div class="p-2 flex-fill bd-highlight"></div>
+          </div>
+          <div class="container">
+            <div class="carousel-caption text-start">
+              <h1>Titulo 1</h1>
+              <p class="opacity-75">Some representative placeholder content for the first slide of the carousel.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Sign up today</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight"></div>
+            <div class="marco-img p-2 flex-fill bd-highlight">
+                <img class="rounded mx-auto d-block h-100" src= "{% static "portal/img/instagram.png" %}" aria-hidden="true" focusable="false" alt="">
+            </div>
+            <div class="p-2 flex-fill bd-highlight"></div>
+          </div>
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Titulo 2</h1>
+              <p class="opacity-75">Some representative placeholder content for the second slide of the carousel.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Learn more</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight"></div>
+            <div class="marco-img p-2 flex-fill bd-highlight">
+                <img class="rounded float-start h-100" src="{% static "portal/img/instagram.png" %}" aria-hidden="true" focusable="false" alt="">
+            </div>
+            <div class="p-2 flex-fill bd-highlight"></div>
+          </div>
+          <div class="container">  
+            <div class="carousel-caption text-end">
+              <h1>Titulo 3</h1>
+              <p class="opacity-75">Some representative placeholder content for the third slide of this carousel.</p>
+              <p><a class="btn btn-primary btn-sm" href="#">Browse gallery</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div> 
+  </div>
