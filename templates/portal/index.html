@@ -14,7 +14,7 @@
         <p>Usuario: {{ nov.usuario | capfirst}}</p>
         <p>Fecha: {{ nov.fecha | date:"d F Y" }}</p>
         <p>Descripción: {{ nov.detalle }}</p>
-        <p><a class="btn btn-primary btn-sm" href="#">Mas Detalles &raquo;</a></p>
+        <p><a class="btn btn-primary btn-sm" href="{% url 'proyecto' nov.codigo %}">Mas Detalles &raquo;</a></p>
       </div><!-- /.col-lg-4 -->
     {% endfor %}
   </div><!-- /.row -->

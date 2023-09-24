@@ -10,5 +10,5 @@ urlpatterns = [
     path('administracion/',portal_views.administracion, name="administracion"),
     path('sesion/',portal_views.sesion,name="sesion"),
     path('registrar/',portal_views.registrar,name="registrar"),
-    # path('novedades/',portal_views.novedades,name="novedades"),
+    path('proyecto/<int:nro_proyecto>',portal_views.proyecto,name="proyecto"),
 ]
