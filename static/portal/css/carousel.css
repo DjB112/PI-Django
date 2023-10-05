@@ -2,6 +2,8 @@
 .marco-img{
   height: 20rem;
   width: 60rem;
+  border-style: double;
+  border-color: brown;
 }
 
 .carousel {

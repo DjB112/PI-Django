@@ -3,7 +3,62 @@
 {%block titulo %}Cartera de Proyectos - Nosotros{% endblock titulo %}
 {%block contenido_principal%}
     {%include "portal/banner.html"%}
-    <main class="container mb-3">
-        <h2>Nosotros</h2>
+    <main class="container">
+        <div class="row align-items-start">    
+            <div class="col"></div>
+            <div class="col-10 text-start text-secondary"><h2>Nosotros</h2></div>
+            <div class="col"></div>
+        </div>
+        <div class="row align-items-start">    
+            <div class="col"></div>
+            <div class="col-10 text-center">{% lorem 3 b random %}</div>
+            <div class="col"></div>
+        </div>
+        <div class="row align-items-start">    
+            <div class="col bg-red text-center"><hr class="hr hr-blurry" /></div>
+        </div>        
+        <div class="row align-items-start mt-0 pt-0">    
+            <div class="col bg-dark"></div>
+            <div class="col-6 text-center"><h2>Formulario de Contacto</h2></div>
+            <div class="col bg-dark"></div>
+        </div>
+        <div class="row align-items-center">    
+            <div class="container">
+                <!-- -------------------Si existen mensajes de error los muestro en un div anterior al formulario---------------- --> 
+                {% for mensaje in messages  %}
+                    <div class="alert-{{mensaje.tags}} text-center">
+                        {{mensaje}}
+                    </div>        
+                {% endfor %}
+            </div>
+            <div class="col-6 text-start">              
+                {% comment %} {% if contexto.respuesta %}
+                
+                {% endif %} {% endcomment %}
+                <!-- -------------------Arranca el formulario de contacto---------------- -->
+                    <form id="form_contacto" name="form_contacto" action="{% url 'nosotros' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for campo in contexto.formulario  %}
+                                <div class="mb-1">
+                                    {% if campo.field.widget.input_type == 'checkbox' %}
+                                        {{campo}}
+                                        <label for="name" class="form-label mb-1">{{campo.label}}</label>
+                                    {% else %}
+                                        <label for="name" class="form-label mb-1">{{campo.label}}</label>
+                                        {{campo}}
+                                    {% endif %}
+                                </div>     
+                                <div class="div-error">{{campo.errors}}</div>
+                                {% endfor %}
+                        </div>                            
+                        <div class="text-center text-md-left mb-3">
+                            <button class="btn btn-primary btn-sm" type="submit">Enviar</button>
+                        </div>
+                    </form>
+                <!-- -------------------Termina el formulario de contacto---------------- -->
+            </div>
+            <div class="col bg-dark"></div>
+        </div>
     </main>    
 {% endblock contenido_principal%}
