@@ -23,7 +23,7 @@
             <div class="col bg-dark"></div>
         </div>
         <div class="row align-items-center">    
-            <div class="container">
+            <div class="col w-25 align-self-center">
                 <!-- -------------------Si existen mensajes de error los muestro en un div anterior al formulario---------------- --> 
                 {% for mensaje in messages  %}
                     <div class="alert-{{mensaje.tags}} text-center">
@@ -31,10 +31,8 @@
                     </div>        
                 {% endfor %}
             </div>
-            <div class="col-6 text-start">              
-                {% comment %} {% if contexto.respuesta %}
-                
-                {% endif %} {% endcomment %}
+            {% if contexto.respuesta != 'si' %}  
+                <div class="col-6 text-start">                                           
                 <!-- -------------------Arranca el formulario de contacto---------------- -->
                     <form id="form_contacto" name="form_contacto" action="{% url 'nosotros' %}" method="post">
                         {% csrf_token %}
@@ -49,16 +47,28 @@
                                         {{campo}}
                                     {% endif %}
                                 </div>     
+                                <!-- Si existe un error en el campo se muestra en una etiqueta debajo del campo -->
                                 <div class="div-error">{{campo.errors}}</div>
-                                {% endfor %}
+                            {% endfor %}
                         </div>                            
                         <div class="text-center text-md-left mb-3">
                             <button class="btn btn-primary btn-sm" type="submit">Enviar</button>
                         </div>
                     </form>
                 <!-- -------------------Termina el formulario de contacto---------------- -->
+                </div>
+            {% endif %}
+            <div class="col">
+                <div class="row-col-1 align-items-start">
+                <i class="fa-solid fa-location-dot fa-2xl"></i>
+                </div>
+                <div class="row-col-1 align-items-center">         
+                <i class="fa-solid fa-envelopes-bulk fa-2xl"></i>
+                </div>
+                <div class="row-col-1 align-items-end">
+                <i class="fa-solid fa-phone-volume fa-2xl"></i>
+                </div>
             </div>
-            <div class="col bg-dark"></div>
         </div>
     </main>    
 {% endblock contenido_principal%}

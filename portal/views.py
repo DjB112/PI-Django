@@ -42,24 +42,29 @@ def busqueda(request):
 
 def nosotros(request):
     formulario_consultas = None
+    respuesta=None
 
     if request.method =='GET':  # Aca es cuando carga por primera ves la pagina
         formulario_consultas= ConsultaForm()
-        
+        respuesta="no"
     elif request.method == 'POST':  # Aca hago todo lo que impacta en el sistema (envio de email, guardar datos, etc)
         formulario_consultas = ConsultaForm(request.POST)
         if formulario_consultas.is_valid():
             messages.success(request,"Hemos recibido tu consulta. Gracias")
+            formulario_consultas= ConsultaForm()
+            respuesta="si"
         else:
             # se dispara un mensaje general en el campo messages al no cumplir is_valid()
-            messages.error(request,"Porfavor revisa los errores en el Formulario")
+            messages.error(request,"Por favor revisa los errores en el Formulario")
+            respuesta="no"
                     
     else:
         return HttpResponseBadRequest("Error de datos enviados, realizar la Consulta nuevamente. Gracias")
     
     contexto={
         'ahora': datetime.now,
-        'formulario': formulario_consultas
+        'formulario': formulario_consultas,
+        'respuesta' : respuesta
     }
     
     return render(request,"portal/nosotros.html",{"contexto": contexto})

@@ -81,13 +81,27 @@ ul.lista-institucional {
 }
 
 .alert-error {
+    width: auto;
     color: #ffffff;
     font-size: 14px;
     font-weight:bolder;
     margin: 5px;
+    padding: 5px;
     border-radius: 5px;
     background-color: red;
     box-shadow: 10px 5px 5px rgba(11, 11, 11, 0.555);    
+}
+
+.alert-success {
+    width: auto;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight:bolder;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(67, 161, 39);
+    box-shadow: 10px 5px 5px rgba(11, 11, 11, 0.555);
 }
 
 .los-mejores .col-lg-3 {
