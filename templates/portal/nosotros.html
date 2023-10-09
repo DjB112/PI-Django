@@ -19,11 +19,11 @@
         </div>        
         <div class="row align-items-start mt-0 pt-0">    
             <div class="col bg-dark"></div>
-            <div class="col-6 text-center"><h2>Formulario de Contacto</h2></div>
+            <div class="col-6 text-center logo-titulo"><h2>Formulario de Contacto</h2></div>
             <div class="col bg-dark"></div>
         </div>
         <div class="row align-items-center">    
-            <div class="col w-25 align-self-center">
+            <div class="col w-25 align-self-center text-center">
                 <!-- -------------------Si existen mensajes de error los muestro en un div anterior al formulario---------------- --> 
                 {% for mensaje in messages  %}
                     <div class="alert-{{mensaje.tags}} text-center">
@@ -58,15 +58,24 @@
                 <!-- -------------------Termina el formulario de contacto---------------- -->
                 </div>
             {% endif %}
-            <div class="col">
-                <div class="row-col-1 align-items-start">
-                <i class="fa-solid fa-location-dot fa-2xl"></i>
+            <div class="col w-auto">
+                <div class="row-1 text-center h-75 mt-3">
+                <i class="fa-solid fa-location-dot fa-2xl mb-3"></i>
+                <p class="m-0">Domicilio: ------------ </p>
+                <p class="m-0">Localidad: ------------ </p>
+                <p class="m-0">Provincia: ------------ </p>
+                <p class="m-0">Pais: ----------------- </p>
                 </div>
-                <div class="row-col-1 align-items-center">         
-                <i class="fa-solid fa-envelopes-bulk fa-2xl"></i>
+                <div class="row-1 text-center h-75 mt-3">         
+                <i class="fa-solid fa-envelopes-bulk fa-2xl mb-3"></i>
+                <p class="m-0">Email 1: ------------ </p>
+                <p class="m-0">Email 2: ------------ </p>
+                <p class="m-0">Email 3: ------------ </p>
                 </div>
-                <div class="row-col-1 align-items-end">
-                <i class="fa-solid fa-phone-volume fa-2xl"></i>
+                <div class="row-1 text-center h-75 mt-3 mb-3">
+                <i class="fa-solid fa-phone-volume fa-2xl mb-3"></i>
+                <p class="m-0">Telefono 1: ------------ </p>
+                <p class="m-0">Telefono 2: ------------ </p>
                 </div>
             </div>
         </div>
