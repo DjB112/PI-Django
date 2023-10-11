@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from datetime import datetime, date
@@ -51,8 +52,16 @@ def nosotros(request):
         formulario_consultas = ConsultaForm(request.POST)
         if formulario_consultas.is_valid():
             messages.success(request,"Hemos recibido tu consulta. Gracias")
-            formulario_consultas= ConsultaForm()
             respuesta="si"
+            
+            send_mail(
+                "Subject here",
+                "Here is the message.",
+                "from@example.com",
+                ["david.j.bustamante@gmail.com"],
+                fail_silently=False,
+            )
+             
         else:
             # se dispara un mensaje general en el campo messages al no cumplir is_valid()
             messages.error(request,"Por favor revisa los errores en el Formulario")
