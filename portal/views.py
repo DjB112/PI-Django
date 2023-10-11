@@ -58,7 +58,7 @@ def nosotros(request):
                 "Subject here",
                 "Here is the message.",
                 "from@example.com",
-                ["david.j.bustamante@gmail.com"],
+                ["mail_destino@gmail.com"],
                 fail_silently=False,
             )
              
