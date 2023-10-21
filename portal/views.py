@@ -44,23 +44,35 @@ def busqueda(request):
 def nosotros(request):
     formulario_consultas = None
     respuesta=None
-
+    sector= ('Seleccionar','Administracion','Colaboracion','Proyectos')
+    
     if request.method =='GET':  # Aca es cuando carga por primera ves la pagina
         formulario_consultas= ConsultaForm()
         respuesta="no"
     elif request.method == 'POST':  # Aca hago todo lo que impacta en el sistema (envio de email, guardar datos, etc)
         formulario_consultas = ConsultaForm(request.POST)
         if formulario_consultas.is_valid():
-            messages.success(request,"Hemos recibido tu consulta. Gracias")
-            respuesta="si"
+
+            mensaje = f"""De : {formulario_consultas.cleaned_data['nombre']}, {formulario_consultas.cleaned_data['apellido']} <{formulario_consultas.cleaned_data['email']}>\n 
+                        Edad: {formulario_consultas.cleaned_data['edad']}\n
+                        Departamento: {sector[int(formulario_consultas.cleaned_data['departamento'])]}\n 
+                        Consulta: {formulario_consultas.cleaned_data['consulta']}\n
+                        Suscripción: {formulario_consultas.cleaned_data['suscripcion']}\n
+                        Declaración: {formulario_consultas.cleaned_data['declaracion']}\n"""
+            mensaje_html = f"""
+                <p>De: {formulario_consultas.cleaned_data['nombre']}, {formulario_consultas.cleaned_data['apellido']} <a href="mailto:{formulario_consultas.cleaned_data['email']}">{formulario_consultas.cleaned_data['email']}</a></p>
+                <p>Edad:  {formulario_consultas.cleaned_data['edad']}</p>
+                <p>Departamento:  {sector[int(formulario_consultas.cleaned_data['departamento'])]}</p>
+                <p>Consulta:  {formulario_consultas.cleaned_data['consulta']}</p>
+                <p>Suscripción:  {formulario_consultas.cleaned_data['suscripcion']}</p>
+                <p>Declaración: {formulario_consultas.cleaned_data['declaracion']}</p>"""
             
-            send_mail(
-                "Subject here",
-                "Here is the message.",
-                "from@example.com",
-                ["mail_destino@gmail.com"],
-                fail_silently=False,
-            )
+            asunto = "CONSULTA DESDE LA PAGINA - " + sector[int(formulario_consultas.cleaned_data['departamento'])]
+                
+            send_mail(asunto, mensaje, settings.EMAIL_HOST_USER, [settings.RECIPIENT_ADDRESS], fail_silently=False, html_message=mensaje_html)
+            
+            messages.success(request,"Hemos recibido tu consulta. Gracias")
+            respuesta="si"          
              
         else:
             # se dispara un mensaje general en el campo messages al no cumplir is_valid()
