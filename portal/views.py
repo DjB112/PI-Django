@@ -73,7 +73,6 @@ def nosotros(request):
             
             messages.success(request,"Hemos recibido tu consulta. Gracias")
             respuesta="si"          
->>>>>>> dev
              
         else:
             # se dispara un mensaje general en el campo messages al no cumplir is_valid()
