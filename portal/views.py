@@ -89,23 +89,3 @@ def nosotros(request):
     }
     
     return render(request,"portal/nosotros.html",{"contexto": contexto})
-
-def colaboracion(request):
-    respuesta = render(request,"portal/colaboracion.html")
-    return respuesta
-
-def administracion(request):
-    respuesta = render(request,"portal/administracion.html")
-    return respuesta
-
-def busqueda(request):
-    respuesta = render(request,"portal/busqueda.html")
-    return respuesta
-
-def registrar(request):
-    respuesta = render(request,"portal/registrar.html")
-    return respuesta
-
-def sesion(request):
-    respuesta = render(request,"portal/sesion.html")
-    return respuesta
