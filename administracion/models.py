@@ -1,5 +1,8 @@
+from collections.abc import Iterable
 from django.db import models
 from django.db.models.query import QuerySet
+from django.urls import reverse_lazy
+from django.utils.text import slugify
 
 class PersonasManager(models.Manager):
     def cantidad(self):
@@ -15,11 +18,19 @@ class Personas(models.Model):
     dni = models.CharField(verbose_name='dni',null=False,max_length=50,blank=False)
     email= models.EmailField(verbose_name='email', null=False, max_length=100)
     estado=models.BooleanField(verbose_name='estado',default=False,null=False)
-    foto_perfil = models.ImageField(upload_to='media/', verbose_name='Foto_de_Perfil')
+    foto_perfil = models.ImageField(upload_to='imagenes/', null=True, verbose_name='foto_perfil')
     # activos = PersonasManager()
     
     def __str__(self):
-        return f"{self.id_personas} - {self.nombre} - {self.email}"
+        return self.nombre
+
+    def delete(self, using=None, keep_parents=False):
+        self.foto_perfil.storage.delete(self.perfil_foto.name)  # borrado fisico
+        super().delete()
+    
+    def save(self, *args, **kwargs):
+        self.nombre_slug = slugify(f"{self.dni}-{self.nombre}")
+        super().save(*args, **kwargs)
     
 class Cuerpo(models.Model):
     nombre = models.CharField(verbose_name='nombre',max_length=100,null=False)

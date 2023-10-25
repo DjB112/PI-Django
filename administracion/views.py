@@ -12,7 +12,7 @@ def registrar(request):
     if request.method=='GET':
         formulario_consultas = PersonasForm()
     elif request.method=='POST':
-        formulario_consultas = PersonasForm(request.POST)
+        formulario_consultas = PersonasForm(request.POST,request.FILES)
         if formulario_consultas.is_valid():
             nombre= formulario_consultas.cleaned_data['nombre']
             apellido=formulario_consultas.cleaned_data['apellido']
