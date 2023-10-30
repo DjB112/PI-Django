@@ -3,9 +3,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from datetime import datetime, date
+from django.urls import reverse_lazy
 from administracion.forms import PersonasForm
-from administracion.models import Personas, Colaboracion, Comentarios, Cuerpo, Proyecto
+from administracion.models import Personas, Colaboracion, Comentarios, Cuerpo, Proyecto, Categoria
 
 def registrar(request):
 
@@ -35,7 +37,7 @@ def sesion(request):
     return respuesta
 
 def administracion(request):
-    respuesta = render(request,"administracion/admin.html")
+    respuesta = render(request,"administracion/index.html")
     return respuesta
 
 def colaboracion(request):
@@ -45,3 +47,15 @@ def colaboracion(request):
 def busqueda(request):
     respuesta = render(request,"administracion/busqueda.html")
     return respuesta
+
+class persona(ListView):
+    model = Personas
+    template_name = 'administracion/abm/index.html'
+    ordering = ['nombre']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Personas"
+        # context['url_alta'] = reverse_lazy('persona_alta')
+        return context
+    
