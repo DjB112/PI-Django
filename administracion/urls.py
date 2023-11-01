@@ -8,9 +8,9 @@ urlpatterns = [
     path('busqueda/', administracion_views.busqueda,name="busqueda"),
     path('colaboracion/', administracion_views.colaboracion,name="colaboracion"),
     
-    path('persona/',administracion_views.persona.as_view(),name="persona"),
-    # path('persona/alta',administracion_views.persona_alta, name="persona_alta"),
-    # path('persona/modificacion/<int:pk>',administracion_views.personas_modificacion, name="persona_modificacion"),
-    # path('persona/baja/<int:pk>', administracion_views.persona_baja, name='persona_baja'),
+    path('persona/',administracion_views.PersonaListView.as_view(),name="persona_index"),
+    path('persona/alta',administracion_views.PersonaCreateView.as_view(), name="persona_alta"),
+    path('persona/modificacion/<int:pk>',administracion_views.PersonaUpdateView.as_view(), name="persona_modificacion"),
+    path('persona/baja/<int:pk>', administracion_views.PersonaDeleteView.as_view(), name='persona_baja'),
     
 ]

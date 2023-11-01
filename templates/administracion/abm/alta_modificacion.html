@@ -5,13 +5,19 @@
 {% block contenido %}
 <h1 class="mt-4">{{titulo}}</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a href="{% url 'inicio_administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'administracion' %}">Administracion</a></li>
     <li class="breadcrumb-item active">{{titulo}}</li>
 </ol>
 
 
 <div class="card">
     <div class="card-header">{{titulo}} </div>
+    <div class="card-body">
+        <div class="col-lg-3 col-md-4 offset-lg-1">
+            <img class="img-fluid" src="{{ object_list.foto_perfil.url }}" alt="">
+        </div>
+        <p>{{ object_list.foto_perfil }}</p>
+    </div>    
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

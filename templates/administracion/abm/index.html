@@ -8,7 +8,33 @@
     <li class="breadcrumb-item"><a href="{% url 'administracion' %}">Administracion</a></li>
     <li class="breadcrumb-item active">{{titulo}}</li>
 </ol>
-
+<div class="card">
+    <div class="card-header">
+        <h3>Filtros</h3>
+    </div>
+    <div class="card-body">
+        <form action="">
+            <div class="row">
+                <div class="col-3">
+                    <div class="md-form mb-0">
+                        <label for="name" class="">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" paceholder="Ingrese el nombre" class="form-control">
+                    </div>   
+                </div>
+                <div class="col-3 ">
+                    <button class="btn btn-primary mt-4">Buscar</button>
+                </div>
+                <div class="md-form mb-0">
+                    <tr class="breadcrumb mb-4">
+                        <td class="breadcrumb-item">Cantidad de Personas: </td>
+                        <td class="breadcrumb-item">{{object_list.count}}</td>
+                    </tr>
+                </div>   
+            </div>
+        </form>
+    </div>
+</div>
+<br>
 <div class="card">
     <div class="card-body">
         <a name="" id="" class="btn btn-success" href="{{url_alta}}" role="button"> <i class="fa-solid fa-circle-plus"></i> Crear </a>

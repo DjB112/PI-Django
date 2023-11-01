@@ -19,7 +19,7 @@ class Personas(models.Model):
     email= models.EmailField(verbose_name='email', null=False, max_length=100)
     estado=models.BooleanField(verbose_name='estado',default=False,null=False)
     foto_perfil = models.ImageField(upload_to='imagenes/', null=True, blank=True, default="-", verbose_name='foto_perfil')
-    activos = PersonasManager()
+    # activos = PersonasManager()
     
     def __str__(self):
         return self.nombre
@@ -27,6 +27,16 @@ class Personas(models.Model):
     def save(self, *args, **kwargs):
         self.nombre_slug = slugify(f"{self.dni}-{self.nombre}")
         super().save(*args, **kwargs)
+    
+    def delete(self, using=None, keep_parents=False):
+        self.foto_perfil.storage.delete(self.foto_perfil.name)  # borrado fisico
+        super().delete()
+    
+    def obtener_baja_url(self):
+        return reverse_lazy('persona_baja', args=[self.id_personas])
+    
+    def obtener_modificacion_url(self):
+        return reverse_lazy('persona_modificacion', args=[self.id_personas])
     
 class Cuerpo(models.Model):
     nombre = models.CharField(verbose_name='nombre',max_length=100,null=False)
