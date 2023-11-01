@@ -1,11 +1,14 @@
+from typing import Any
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpRequest
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from datetime import datetime, date
+from django.urls import reverse_lazy
 from administracion.forms import PersonasForm
-from administracion.models import Personas, Colaboracion, Comentarios, Cuerpo, Proyecto
+from administracion.models import Personas, Colaboracion, Comentarios, Cuerpo, Proyecto, Categoria
 
 def registrar(request):
 
@@ -35,7 +38,8 @@ def sesion(request):
     return respuesta
 
 def administracion(request):
-    respuesta = render(request,"administracion/admin.html")
+    variable = 'No inspirarse en este proyecto ;)'
+    respuesta = render(request,"administracion/index.html", {'variable': variable})
     return respuesta
 
 def colaboracion(request):
@@ -45,3 +49,50 @@ def colaboracion(request):
 def busqueda(request):
     respuesta = render(request,"administracion/busqueda.html")
     return respuesta
+
+class PersonaListView(ListView):
+    model = Personas
+    template_name = 'administracion/abm/index.html'
+    context_object_name="object_list"
+    queryset = Personas.objects.all()
+    ordering = ['nombre']
+      
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Personas"
+        context['url_alta'] = reverse_lazy('persona_alta')
+        return context
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
+        if 'nombre' in request.GET:
+            self.queryset = self.queryset.filter(nombre__contains=request.GET['nombre'])
+        return super().get(request, *args, **kwargs)
+
+class PersonaCreateView(CreateView):
+    model = Personas
+    form_class = PersonasForm
+    template_name = 'administracion/abm/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('persona_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Nueva Persona"
+        return context
+
+class PersonaUpdateView(UpdateView):
+    model = Personas
+    form_class = PersonasForm
+    template_name = 'administracion/abm/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('persona_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Modificar Persona"
+        return context
+
+class PersonaDeleteView(DeleteView):
+    model = Personas
+    template_name = 'administracion/abm/baja.html'
+    success_url = reverse_lazy('persona_index')    
