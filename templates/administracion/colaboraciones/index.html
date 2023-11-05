@@ -45,18 +45,16 @@
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th>Diseñador</th>
-                    <th>Foto Perfil</th>
+                    <th>Estado Activo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for objeto_con_nombre in object_list  %}
                     <tr>
-                        <td>{{objeto_con_nombre.id_personas}}</td>
+                        <td>{{objeto_con_nombre.id_colaboracion}}</td>
                         <td>{{objeto_con_nombre.nombre}}</td>
                         <td>{{objeto_con_nombre.estado}}</td>
-                        <td><img class="img-fluid" src="{{ objeto_con_nombre.foto_perfil.url }}" style="width: 4vw; height: auto;" alt="{{ objeto_con_nombre.foto_perfil}}"></td>
                         <td>
                             <a href="{{objeto_con_nombre.obtener_modificacion_url}}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
                             <a href="{{objeto_con_nombre.obtener_baja_url}}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>

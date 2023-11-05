@@ -46,23 +46,30 @@
                             <div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>
                                  Novedades                       
                         </a>
-                        <a class="nav-link" href="{% url 'persona_index' %}">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-laptop-code"></i></div>
-                                Categorias                        
-                        </a>
-                        <a class="nav-link" href="{% url 'persona_index' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Personas                         
-                        </a>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-bars-progress"></i></div>
-                                Cartera de Proyectos
+                                Categorias
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="">Proyectos</a>
-                                <a class="nav-link" href="">Colaboraciones</a>
+                                <a class="nav-link" href="{% url 'categoriasproyecto_index'%}">De Proyectos</a>
+                                <a class="nav-link" href="{% url 'categoriascolaboracion_index'%}">De Colaboraciones</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="{% url 'persona_index' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Personas                         
+                        </a>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts_dos" aria-expanded="false" aria-controls="collapseLayouts_dos">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bars-progress"></i></div>
+                                Cartera de Proyectos
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts_dos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'proyectos_index' %}">Proyectos</a>
+                                <a class="nav-link" href="{% url 'colaboraciones_index' %}">Colaboraciones</a>
                             </nav>
                         </div>
                         <a class="nav-link" href="{% url 'indice' %}">

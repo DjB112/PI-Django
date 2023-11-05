@@ -13,10 +13,10 @@
 <div class="card">
     <div class="card-header">{{titulo}} </div>
     <div class="card-body">
+        <h3>Imagen de Perfil Actual</h3>
         <div class="col-lg-3 col-md-4 offset-lg-1">
-            <img class="img-fluid" src="{{ object_list.foto_perfil.url }}" alt="">
+            <img class="img-fluid" src="{{ object_list.foto_perfil.url }}" style="width: 10vw; height: auto;" alt="">
         </div>
-        <p>{{ object_list.foto_perfil }}</p>
     </div>    
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">

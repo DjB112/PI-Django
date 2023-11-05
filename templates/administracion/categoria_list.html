@@ -1,12 +1,12 @@
 {% extends 'administracion/base.html' %}
 
-{% block titulo %}Categorias cursos{% endblock%}
+{% block titulo %}{{titulo}}{% endblock%}
 
 {% block contenido %}
-<h1 class="mt-4">Categorias cursos</h1>
+<h1 class="mt-4">{{titulo}}</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a href="{% url 'inicio_administracion' %}">Administracion</a></li>
-    <li class="breadcrumb-item active">Categorias</li>
+    <li class="breadcrumb-item"><a href="{% url 'administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">{{titulo}}</li>
 </ol>
 
 <div class="card">
@@ -37,13 +37,14 @@
 <br>
 <div class="card">
     <div class="card-body">
-        <a name="" id="" class="btn btn-success" href="{% url 'categorias_nuevo' %}" role="button"> <i class="fa-solid fa-circle-plus"></i> Nuevo</a>
-        <!-- bs5-table-defaul -->
+        <a name="" id="" class="btn btn-success" href="{{url_alta}}" role="button"> <i class="fa-solid fa-circle-plus"></i> Nuevo</a>
+        {% comment %} <!-- bs5-table-defaul {% url 'categorias_nuevo' %} --> {% endcomment %}
         <table class="table">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
+                    <th>Categoria Activa</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -52,9 +53,12 @@
                     <tr>
                         <td>{{categoria.id}}</td>
                         <td>{{categoria.nombre}}</td>
+                        <td>{{categoria.baja}}</td>
                         <td>
-                            <a href="{% url 'categorias_editar' categoria.id %}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
-                            <a href="{% url 'categorias_eliminar' categoria.id %}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            {% comment %} <a href="{% url 'categorias_editar' categoria.id %}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
+                            <a href="{% url 'categorias_eliminar' categoria.id %}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>                         {% endcomment %}
+                            <a href="{{categoria.obtener_modificacion_url}}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
+                            <a href="{{categoria.obtener_baja_url}}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
