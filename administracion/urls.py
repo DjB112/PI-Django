@@ -8,6 +8,11 @@ urlpatterns = [
     path('colaboracion/', administracion_views.colaboracion,name="colaboracion"),
     # Seccion Administracion
     path('',administracion_views.administracion, name="administracion"),
+    # Seccion Novedades
+    path('novedades/',administracion_views.NovedadListView.as_view(), name="novedad_index"),
+    path('novedades/nueva',administracion_views.NovedadCreateView.as_view(), name="novedad_nueva"),
+    path('novedad/editar/<int:pk>', administracion_views.NovedadUpdateView.as_view(), name="novedad_editar"),
+    path('novedad/baja/<int:pk>', administracion_views.NovedadDeleteView.as_view(), name="novedad_baja"),
     # Seccion Personas
     path('persona/',administracion_views.PersonaListView.as_view(),name="persona_index"),
     path('persona/alta',administracion_views.PersonaCreateView.as_view(), name="persona_alta"),
@@ -27,9 +32,12 @@ urlpatterns = [
     path('proyectos/nuevo/', administracion_views.ProyectoCreateView.as_view(),name="proyecto_alta"),
     path('proyectos/editar/<int:pk>',administracion_views.ProyectoUpdateView.as_view(),name="proyecto_editar"),
     path('proyectos/baja/<int:pk>',administracion_views.ProyectoDeleteView.as_view(),name="proyecto_baja"),
+    path('proyectos/comentarios/<int:pk>',administracion_views.ComentarioProyectoListView.as_view(),name="comentarios_proyecto"),
+    path('proyectos/comentario_editar/<int:pk>',administracion_views.ComentarioProyectoUpdateView.as_view(),name="comentario_editar"),
+    path('proyectos/comentario_eliminar/<int:pk>',administracion_views.ComentarioProyectoDeleteView.as_view(),name="comentario_eliminar"),
     # Seccion Colaboracion
     path('colaboraciones/',administracion_views.ColaboracionListView.as_view(),name="colaboraciones_index"),
     path('colaboraciones/nuevo/', administracion_views.ColaboracionCreateView.as_view(),name="colaboracion_alta"),
     path('colaboraciones/editar/<int:pk>',administracion_views.ColaboracionUpdateView.as_view(),name="colaboracion_editar"),
-    path('colaboraciones/baja/<int:pk>',administracion_views.ColaboracionDeleteView.as_view(),name="colaboracion_baja"),   
+    path('colaboraciones/baja/<int:pk>',administracion_views.ColaboracionDeleteView.as_view(),name="colaboracion_baja"), 
 ]

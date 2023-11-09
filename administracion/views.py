@@ -7,8 +7,8 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpRequest
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from datetime import datetime, date
 from django.urls import reverse_lazy
-from administracion.forms import PersonasForm, CategoriaFormProyectos,CategoriaFormColaboraciones, ProyectosForm, ColaboracionForm
-from administracion.models import Personas, Colaboracion, Comentarios, Cuerpo, Proyecto, CategoriaProyectos,CategoriaColaboraciones
+from administracion.forms import NovedadesForm, PersonasForm, ComentariosForm, CategoriaFormProyectos,CategoriaFormColaboraciones, ProyectosForm, ColaboracionForm
+from administracion.models import Novedades, Personas, Colaboracion, Comentarios, Proyecto, CategoriaProyectos,CategoriaColaboraciones
 
 def registrar(request):
 
@@ -50,9 +50,56 @@ def busqueda(request):
     respuesta = render(request,"administracion/busqueda.html")
     return respuesta
 
+class NovedadListView(ListView):
+    model = Novedades
+    template_name = 'administracion/novedades/index.html'
+    context_object_name ="categoria_list"
+    queryset = Novedades.objects.all()
+    ordering = ['fecha']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Novedades"
+        context['url_alta'] = reverse_lazy('novedad_nueva')
+        return context
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any):
+        if 'titulo' in request.GET:
+            self.queryset = self.queryset.filter(titulo__contains=request.GET['titulo'])
+        return super().get(request, *args, **kwargs)
+
+class NovedadCreateView(CreateView):
+    model = Novedades
+    form_class = NovedadesForm
+    template_name = 'administracion/novedades/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('novedad_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Nueva Novedad"
+        return context
+
+class NovedadUpdateView(UpdateView):
+    model = Novedades
+    form_class = NovedadesForm
+    template_name = 'administracion/novedades/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('novedad_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Modificar Novedad"
+        return context
+
+class NovedadDeleteView(DeleteView):
+    model = Novedades
+    template_name = 'administracion/novedades/baja.html'
+    success_url = reverse_lazy('novedad_index')
+
 class CategoriasproyectoListView(ListView):
     model = CategoriaProyectos
-    template_name = 'administracion/categoria_list.html'
+    template_name = 'administracion/categorias/categoria_list.html'
     context_object_name="categoria_list"
     queryset = CategoriaProyectos.objects.all()
     ordering = ['nombre']
@@ -99,7 +146,7 @@ class CategoriasproyectoDeleteView(DeleteView):
 
 class CategoriascolaboracionListView(ListView):
     model = CategoriaColaboraciones
-    template_name = 'administracion/categoria_list.html'
+    template_name = 'administracion/categorias/categoria_list.html'
     context_object_name="categoria_list"
     queryset = CategoriaColaboraciones.objects.all()
     ordering = ['nombre']
@@ -286,3 +333,42 @@ class ColaboracionDeleteView(DeleteView):
     model = Colaboracion
     template_name = 'administracion/colaboraciones/baja.html'
     success_url = reverse_lazy('colaboraciones_index')
+    
+class ComentarioProyectoListView(ListView):
+    model = Comentarios
+    template_name = 'administracion/comentarios/comentarios.html'
+    context_object_name ="object_list"
+    queryset=Comentarios.objects.filter(tipo = 'PRO')
+    ordering = ['fecha_creacion']
+    
+    def get_queryset(self):
+      return super(ComentarioProyectoListView,self).get_queryset().filter(nro_proyecto=self.kwargs.get("pk"))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nombreproyecto'] = 'Comentarios del Proyecto: ' + Proyecto.objects.get(id_proyecto=self.kwargs.get("pk")).nombre
+        context['ident'] = self.kwargs.get("pk")
+        context['titulo'] = "Comentarios"
+        return context
+
+class ComentarioProyectoUpdateView(UpdateView):
+    model = Comentarios
+    form_class = ComentariosForm
+    template_name = 'administracion/comentarios/alta_modificacion.html'
+    context_object_name="object_list"
+    
+    def get_success_url(self, **kwargs):   
+            return reverse_lazy('comentarios_proyecto', kwargs={'pk': self.object.nro_proyecto_id}) 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Modificar Comentario"
+        return context
+
+    
+class ComentarioProyectoDeleteView(DeleteView):
+    model = Comentarios
+    template_name = 'administracion/comentarios/comentarios_baja.html'
+
+    def get_success_url(self, **kwargs):   
+            return reverse_lazy('comentarios_proyecto', kwargs={'pk': self.object.nro_proyecto_id})    

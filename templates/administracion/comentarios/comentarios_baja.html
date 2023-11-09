@@ -1,0 +1,23 @@
+{% extends 'administracion/base.html' %}
+
+{% block titulo %}Eliminar Comentario{% endblock%}
+
+{% block contenido %}
+<h1 class="mt-4">Eliminar Comentario</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">Eliminar Comentario de {{object.nro_proyecto}}</li>
+</ol>
+
+
+<div class="card">
+    <div class="card-header">Eliminar Comentario</div>
+    <div class="card-body">
+        <form method="post">{% csrf_token %}
+            <p>Esta seguro que quiere eliminar "{{ object.comentario }}"?</p>
+            <input type="submit" value="Confirmar" class="btn btn-danger">
+        </form>
+        
+    </div>
+</div>
+{% endblock %}

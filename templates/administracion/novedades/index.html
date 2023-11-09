@@ -18,8 +18,8 @@
             <div class="row">
                 <div class="col-3">
                     <div class="md-form mb-0">
-                        <label for="name" class="">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ingrese el nombre" class="form-control">
+                        <label for="name" class="">Titulo</label>
+                        <input type="text" id="titulo" name="titulo" placeholder="Ingrese el tiutlo" class="form-control">
                     </div>   
                 </div>
                 <div class="col-3 ">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="md-form mb-0">
                     <tr class="breadcrumb mb-4">
-                        <td class="breadcrumb-item">Cantidad de Personas: </td>
+                        <td class="breadcrumb-item">Cantidad de Novedades: </td>
                         <td class="breadcrumb-item">{{object_list.count}}</td>
                     </tr>
                 </div>   
@@ -44,21 +44,20 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Estado Activo</th>
+                    <th>Titulo</th>
+                    <th>Fecha</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for objeto_con_nombre in object_list  %}
                     <tr>
-                        <td>{{objeto_con_nombre.id_proyecto}}</td>
-                        <td>{{objeto_con_nombre.nombre}}</td>
-                        <td>{{objeto_con_nombre.estado}}</td>
+                        <td>{{objeto_con_nombre.id_novedad}}</td>
+                        <td>{{objeto_con_nombre.titulo}}</td>
+                        <td>{{objeto_con_nombre.fecha}}</td>
                         <td>
                             <a href="{{objeto_con_nombre.obtener_modificacion_url}}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
                             <a href="{{objeto_con_nombre.obtener_baja_url}}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <a href="{{objeto_con_nombre.obtener_comentarios_url}}" title="Comentario" class="btn btn-success"><i class="fas fa-tasks"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

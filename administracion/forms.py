@@ -1,13 +1,24 @@
 from django import forms
 from django.forms import ValidationError
 import re
-from administracion.models import Personas,Participaciones, CategoriaProyectos,CategoriaColaboraciones, Colaboracion, Comentarios, Cuerpo, Proyecto
+from administracion.models import Novedades, Personas,Participaciones, CategoriaProyectos,CategoriaColaboraciones, Colaboracion, Comentarios, Cuerpo, Proyecto
 
 def solo_caracteres(value):
     if any(char.isdigit() for char in value):
         raise ValidationError('El nombre no puede contener números. %(valor)s',
                               code='Error1',
                               params={'valor': value})
+
+class NovedadesForm(forms.ModelForm):
+
+    class Meta:    
+        model = Novedades
+        fields = ("titulo", "mensaje",'estado','contenido','imagen')
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese Titulo de Novedad'}),
+            'mensaje': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese Mensaje Breve'}),
+            'contenido': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Ingrese aqui el texto largo'}),
+        }
 
 class PersonasForm(forms.ModelForm):
     nombre = forms.CharField(
@@ -91,3 +102,12 @@ class ParticipacionesForm(forms.ModelForm):
     class Meta:    
         model = Participaciones
         fields = ('__all__')
+
+class ComentariosForm(forms.ModelForm):
+
+    class Meta:    
+        model = Comentarios
+        fields = ['comentario','estado']
+        widgets = {
+            'comentario': forms.Textarea(attrs={'class':'form-control','rows':10}),
+        }

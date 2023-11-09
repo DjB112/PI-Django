@@ -4,6 +4,43 @@ from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 
+class NovedadesManager(models.Manager):
+    def cantidad(self):
+        return self.count()
+    def get_queryset(self):
+        return super().get_queryset().filter(estado = True)
+
+class Novedades(models.Model):
+    id_novedad = models.BigAutoField(verbose_name='id_novedad',primary_key=True,auto_created=True)
+    titulo = models.CharField(verbose_name='Titulo', max_length=200, null=False, blank=False)
+    mensaje = models.CharField(verbose_name='Mensaje Corto', max_length=250, null=False, blank=False)
+    estado = models.BooleanField(verbose_name='Estado Activo',default=False,null=False)
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    contenido = models.TextField(verbose_name="Contenido",null=False,blank=False)
+    imagen =  models.ImageField(upload_to='imagenes/novedades/', null=True, blank=True, default="", verbose_name='Imagen Novedad')
+    objects = models.Manager()
+    novedades = NovedadesManager()
+    
+    def __str__(self):
+        return self.titulo
+    
+    def save(self, *args, **kwargs):
+        self.titulo_slug = slugify(f"{self.id_novedad}-{self.fecha}")
+        super().save(*args, **kwargs)
+    
+    def delete(self, using=None, keep_parents=False):
+        self.imagen.storage.delete(self.imagen.name)  # borrado fisico
+        super().delete()
+    
+    def obtener_baja_url(self):
+        return reverse_lazy('novedad_baja', args=[self.id_novedad])
+    
+    def obtener_modificacion_url(self):
+        return reverse_lazy('novedad_editar', args=[self.id_novedad])
+       
+    class Meta:
+        verbose_name_plural = "Novedades"
+        
 class DisenadoresManager(models.Manager):
     def cantidad(self):
         return self.count()
@@ -109,16 +146,12 @@ class Proyecto(Cuerpo):
 
     def obtener_modificacion_url(self):
         return reverse_lazy('proyecto_editar', args=[self.id_proyecto])
+    
+    def obtener_comentarios_url(self):
+        return reverse_lazy('comentarios_proyecto', args=[self.id_proyecto])
 
     class Meta:
         verbose_name_plural = "Proyectos"
-
-# class ComentarioProyecto(models.Model):
-#     id_comentario=models.BigAutoField(verbose_name='id_comentario', primary_key=True, auto_created=True)
-#     id_persona= models.ForeignKey(Personas, on_delete= models.SET_NULL)
-#     comentario = models.CharField(verbose_name='comentario',null=True,blank=False, max_length=250)
-#     fecha = models.DateTimeField(auto_now=True, verbose_name="Fecha")
-#     visible = models.BooleanField(verbose_name='Visible',default=True)
     
 class Colaboracion(Cuerpo):
     id_colaboracion = models.BigAutoField(verbose_name='id_colaboracion', primary_key=True, auto_created=True)
@@ -155,11 +188,34 @@ class Participaciones(models.Model):
     class Meta:
         verbose_name_plural = "Participaciones"
     
+class ComentariosManager(models.Manager):
+    def cantidad(self):
+        return self.count()
+    def get_queryset(self):
+        return super().get_queryset().filter(estado = True)
+
 class Comentarios(models.Model):
-    id_comentarios=models.BigAutoField(verbose_name='id_comentarios',primary_key=True, auto_created=True)
-    persona=models.ManyToManyField(Personas)
+    class Estado(models.TextChoices):
+        PROYECTO = 'PRO', 'Proyecto'
+        COLABORACION = 'COL', 'Colaboracion'
+    id_comentarios = models.BigAutoField(verbose_name='id_comentarios',primary_key=True, auto_created=True)
+    nro_proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
+    id_persona = models.ForeignKey(Personas,on_delete=models.SET_NULL,null=True)
+    tipo=models.CharField(max_length=3, choices=Estado.choices, default=Estado.PROYECTO)
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
     comentario= models.TextField(verbose_name='comentario')
+    estado= models.BooleanField(verbose_name='Visible',default=True)
+    objects = models.Manager()
+    novedades = ComentariosManager()
+      
+    def obtener_comentarios_url(self):
+        return reverse_lazy('comentarios_proyecto', args=[self.id_comentarios])
+    
+    def obtener_modificacion_com(self):
+        return reverse_lazy('comentario_editar', args=[self.id_comentarios])
 
+    def obtener_eliminar_com(self):
+        return reverse_lazy('comentario_eliminar', args=[self.id_comentarios])
+    
     class Meta:
         verbose_name_plural = "Comentarios"
