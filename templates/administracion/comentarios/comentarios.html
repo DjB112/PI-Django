@@ -1,0 +1,70 @@
+{% extends 'administracion/base.html' %}
+{% load static %}
+
+{% block titulo %}{{titulo}}{% endblock%}
+
+{% block contenido %}
+<h1 class="mt-4">{{titulo}}</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">{{nombreproyecto}}</li>
+</ol>
+<div class="card">
+    <div class="card-body">
+        <form action="">
+            <div class="row">
+                <div class="md-form mb-0">
+                    <tr class="breadcrumb mb-4">
+                        <td class="breadcrumb-item">Cantidad de Comentarios: </td>
+                        <td class="breadcrumb-item">{{object_list.count}}</td>
+                    </tr>
+                </div>   
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<div class="card">
+    <div class="card-body">
+        {% comment %} <a name="" id="" class="btn btn-success" href="{{url_alta}}" role="button"> <i class="fa-solid fa-circle-plus"></i> Crear </a> {% endcomment %}
+        <!-- bs5-table-defaul -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Persona</th>
+                    {% comment %} <th>Nombre de Proyecto</th>     {% endcomment %}
+                    <th>Fecha</th>
+                    <th>Comentario</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for objeto_con_nombre in object_list  %}
+                    <tr>
+                        <td>{{objeto_con_nombre.id_comentarios}}</td>
+                        <td>{{objeto_con_nombre.id_persona}}</td>
+                        {% comment %} <td>{{objeto_con_nombre.nro_proyecto}}</td> {% endcomment %}
+                        <td>{{objeto_con_nombre.fecha_creacion}}</td>
+                        <td>{{objeto_con_nombre.comentario}}
+                        <td>{{objeto_con_nombre.estado}}</td>
+                        <td>
+                            <a href="{{objeto_con_nombre.obtener_eliminar_com}}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            <a href="{{objeto_con_nombre.obtener_modificacion_com}}" title="Editar" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
+
+                            {% comment %} <a href="{{objeto_con_nombre.obtener_baja_url}}" title="Eliminar" class="btn btn-danger"><i class="fas fa-trash"></i></a> {% endcomment %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+{% endblock %}
+    

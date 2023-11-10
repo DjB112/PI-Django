@@ -1,6 +1,6 @@
 {% extends '../base.html' %}
 
-{% block titulo %}{{titulo}}{% endblock%}
+{% block titulo %} {{titulo}}{% endblock%}
 
 {% block contenido %}
 <h1 class="mt-4">{{titulo}}</h1>
@@ -11,7 +11,13 @@
 
 
 <div class="card">
-    <div class="card-header">{{titulo}}</div>
+    <div class="card-header">{{titulo}} </div>
+    <div class="card-body">
+        <h3>Imagen de Novedad</h3>
+        <div class="col-lg-3 col-md-4 offset-lg-1">
+            <img class="img-fluid" src="{{ object_list.imagen.url }}" style="width: 20vw; height: auto;" alt="">
+        </div>
+    </div>    
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

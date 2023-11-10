@@ -1,6 +1,6 @@
 {% extends '../base.html' %}
 
-{% block titulo %}{{titulo}}{% endblock%}
+{% block titulo %} {{titulo}}{% endblock%}
 
 {% block contenido %}
 <h1 class="mt-4">{{titulo}}</h1>
@@ -11,10 +11,17 @@
 
 
 <div class="card">
-    <div class="card-header">{{titulo}}</div>
+    <div class="card-header">{{titulo}} </div>
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <div class="form-group">
+                <ol>
+                    <li>Persona: {{object_list.id_persona}}</li>
+                    <li>Proyecto: {{object_list.nro_proyecto}}</li>
+                    <li>Fecha: {{object_list.fecha_creacion}}</li>
+                </ol>
+            </div>
             {% for campo in form %}
                 <div class="form-group">
                     <label for="">{{campo.label}}</label>
