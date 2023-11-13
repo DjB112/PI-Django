@@ -5,17 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from datetime import datetime, date
 from portal.forms import ConsultaForm
-
-    # Supongamos que tenemos una lista de diccionarios con registros y fechas:
-registros = [
-        {"codigo": 11, "url_icono": "portal/img/icon_11.png", "usuario": "Roberto Noooni", "nombre": "Nombre Proyecto 1", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 23)},
-        {"codigo": 12, "url_icono": "portal/img/icon_12.png", "usuario": "Carlos Yutooni", "nombre": "Nombre Proyecto 2", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 21)},
-        {"codigo": 13, "url_icono": "portal/img/icon_13.png", "usuario": "Juano PPooni", "nombre": "Nombre Proyecto 3", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 11)},
-        {"codigo": 14, "url_icono": "portal/img/icon_14.png", "usuario": "Pablo Frffooni", "nombre": "Nombre Proyecto 4", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 21)},
-        {"codigo": 15, "url_icono": "portal/img/icon_15.png", "usuario": "Daniel ZZooni", "nombre": "Nombre Proyecto 5", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 22)},
-        {"codigo": 16, "url_icono": "portal/img/icon_16.png", "usuario": "Miguel Lleoni", "nombre": "Nombre Proyecto 6", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 19)},
-        {"codigo": 17, "url_icono": "portal/img/icon_17.png", "usuario": "Miguuuuuel Lleoni", "nombre": "Nombre Proyecto 6", "detalle": "asdasdad asdasdasd asdadsa", "fecha": date(2023, 9, 23)},
-    ]
+from administracion.models import Novedades, Proyecto, Colaboracion
    
 # Define una función para calcular la diferencia entre la fecha actual y la fecha de cada registro
 def diferencia_fecha(registro):
@@ -24,17 +14,33 @@ def diferencia_fecha(registro):
     return abs(registro["fecha"] - fecha_actual)
 
 def indice(request):
-    global registros
-    # Ordena los registros por proximidad a la fecha actual
-    registros_ordenados = sorted(registros, key=diferencia_fecha)
     # Selecciona los primeros 4 registros
-    registros_seleccionados = registros_ordenados[:4]
+    if (Proyecto.activos.cantidad()>4):
+        proyectos_nuevos = Proyecto.activos.all()[:4]
+    else:
+        proyectos_nuevos = Proyecto.activos.all()
+        
+    reg_nov = Novedades.novedades.all()
     
-    respuesta = render(request,"portal/index.html",{"novedades": registros_seleccionados})
+    reg_col = Colaboracion.ultimacolaboracion.all().order_by('-id_colaboracion')[0]
+    # nombre_col = reg_col.nombre
+    
+    respuesta = render(request,"portal/index.html",{"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
     return respuesta
 
 def proyecto(request, nro_proyecto):
+    
     respuesta = render(request,"portal/proyecto.html",{"codigo": nro_proyecto})
+    return respuesta
+
+def colaboracion(request):
+        
+    respuesta = render(request,"portal/colaboracion.html")
+    return respuesta
+
+def ultimacolaboracion(request,nro_colaboracion):
+        
+    respuesta = render(request,"portal/ultimacolaboracion.html", {"codigo": nro_colaboracion})
     return respuesta
 
 def busqueda(request):

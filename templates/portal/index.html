@@ -7,14 +7,16 @@
 <div class="container los-mejores">
   <div class="row">
     <h4 class="fw-blond p-2 text-center">Proyectos<span class="text-secondary"> Nuevos</span></h4>
-    {% for nov in novedades %}
+    {% for nov in proyectos_nuevos %}
       <div class="col-lg-3 m-0">
-        <img class="rounded-circle" width="140" height="140" src="{% static nov.url_icono %}" alt="">
-        <h4 class="fw-blond">{{ nov.nombre | capfirst}} {{ nov.codigo }}</h4>
-        <p>Usuario: {{ nov.usuario | capfirst}}</p>
-        <p>Fecha: {{ nov.fecha | date:"d F Y" }}</p>
-        <p>Descripción: {{ nov.detalle }}</p>
-        <p><a class="btn btn-primary btn-sm" href="{% url 'proyecto' nov.codigo %}">Mas Detalles &raquo;</a></p>
+        <img class="rounded-circle" width="140" height="140" src="{{ nov.foto.url }}" alt="Imagen">
+        <h4 class="fw-blond">{{ nov.nombre | capfirst}} {{ nov.categoria}}</h4>
+        <p>Usuario: {{ nov.personas | capfirst}}</p>
+        <p>Fecha: {{ nov.fecha_creacion | date:"d F Y" }}</p>
+        <div class="text-wrap text-break">
+          <p><b>Descripción: </b>{{ nov.descripcion }}</p>
+        </div>
+        <p><a class="btn btn-primary btn-sm" href="{% url 'proyecto' nov.id_proyecto %}">Mas Detalles &raquo;</a></p>
       </div><!-- /.col-lg-4 -->
     {% endfor %}
   </div><!-- /.row -->
@@ -24,11 +26,12 @@
 <div class="varios-main container">
   <div class="row justify-content-md-center">
       <div class="col-md-7 justify-content-center align-middle">
-        <h4 class="featurette-heading fw-normal">First featurette heading.<span class="text-secondary">It ll blow your mind.</span></h4>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam alias quibusdam tempore nam facilis sint! Libero excepturi magni nihil quis facilis, cum eum sed repudiandae quaerat molestiae rerum ex incidunt.</p>
+        <h4 class="featurette-heading fw-normal">Ultimo Proyecto de Colaboración <span class="text-secondary">{{ultima_colaboracion.nombre}}</span></h4>
+        <p>{{ultima_colaboracion.descripcion}}</p>
+        <p><a class="btn btn-primary btn-sm" href="{% url 'ultimacolaboracion' ultima_colaboracion.id_colaboracion %}">Mas Detalles &raquo;</a></p>
       </div>
       <div class="col-md-3">
-        <img class="img-fluid rounded float-end d-block" src="{% static "portal/img/instagram.png" %}" aria-hidden="true" focusable="false" alt="">
+        <img class="img-fluid rounded float-end d-block" src="{{ultima_colaboracion.foto.url}}" aria-hidden="true" focusable="false" alt="">
       </div>
   </div>
 </div>

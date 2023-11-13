@@ -75,7 +75,7 @@ class ProyectosForm(forms.ModelForm):
 
     class Meta:    
         model = Proyecto
-        fields = ['nombre', 'descripcion','estado','categoria','personas','foto']
+        fields = ['nombre', 'descripcion','estado','categoria','personas','foto',]
         widgets = {
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
             'descripcion': forms.Textarea(attrs={'class':'form-control','rows':10}),

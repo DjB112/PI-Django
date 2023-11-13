@@ -42,10 +42,6 @@ def administracion(request):
     respuesta = render(request,"administracion/index.html", {'variable': variable})
     return respuesta
 
-def colaboracion(request):
-    respuesta = render(request,"administracion/colaboracion.html")
-    return respuesta
-
 def busqueda(request):
     respuesta = render(request,"administracion/busqueda.html")
     return respuesta

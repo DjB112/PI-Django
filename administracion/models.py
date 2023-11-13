@@ -9,7 +9,7 @@ class NovedadesManager(models.Manager):
         return self.count()
     def get_queryset(self):
         return super().get_queryset().filter(estado = True)
-
+    
 class Novedades(models.Model):
     id_novedad = models.BigAutoField(verbose_name='id_novedad',primary_key=True,auto_created=True)
     titulo = models.CharField(verbose_name='Titulo', max_length=200, null=False, blank=False)
@@ -28,6 +28,14 @@ class Novedades(models.Model):
         self.titulo_slug = slugify(f"{self.id_novedad}-{self.fecha}")
         super().save(*args, **kwargs)
     
+    def SetInactivos(self):
+        self.estado =False
+        self.save()
+    
+    def SetActivos(self):
+        self.estado =True
+        self.save()
+    
     def delete(self, using=None, keep_parents=False):
         self.imagen.storage.delete(self.imagen.name)  # borrado fisico
         super().delete()
@@ -39,6 +47,7 @@ class Novedades(models.Model):
         return reverse_lazy('novedad_editar', args=[self.id_novedad])
        
     class Meta:
+        ordering = ["-fecha"]
         verbose_name_plural = "Novedades"
         
 class DisenadoresManager(models.Manager):
@@ -81,7 +90,7 @@ class Personas(models.Model):
     
 class Cuerpo(models.Model):
     nombre = models.CharField(verbose_name='nombre',max_length=100,null=False)
-    descripcion=models.CharField(verbose_name='descripcion',null=False, max_length=255)
+    descripcion=models.TextField(verbose_name='descripcion',null=False, max_length=255)
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
     fecha_modificacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
     estado = models.BooleanField(verbose_name='Estado Activo',null=False, default=False)
@@ -98,6 +107,14 @@ class CategoriaProyectos(models.Model):
 
     def save(self):
         return super().save()
+
+    def SetInactivos(self):
+        self.estado =False
+        self.save()
+    
+    def SetActivos(self):
+        self.estado =True
+        self.save()
     
     def obtener_baja_url(self):
         return reverse_lazy('categoriasproyecto_baja', args=[self.id])
@@ -118,6 +135,14 @@ class CategoriaColaboraciones(models.Model):
 
     def save(self):
         super().save()
+
+    def SetInactivos(self):
+        self.estado =False
+        self.save()
+    
+    def SetActivos(self):
+        self.estado =True
+        self.save()
     
     def obtener_baja_url(self):
         return reverse_lazy('categoriascolaboracion_baja', args=[self.id])
@@ -127,19 +152,35 @@ class CategoriaColaboraciones(models.Model):
 
     class Meta:
         verbose_name_plural = "CategoriaColaboraciones"
+
+class ProyectoManager(models.Manager):
+    def cantidad(self):
+        return self.count()
+    def get_queryset(self):
+        return super().get_queryset().filter(estado = True)
                  
 class Proyecto(Cuerpo):        
     id_proyecto =models.BigAutoField(verbose_name='id_proyecto', primary_key=True, auto_created=True)
     categoria = models.ForeignKey(CategoriaProyectos, on_delete=models.CASCADE)
     personas = models.ForeignKey(Personas,on_delete=models.CASCADE)
     foto = models.ImageField(upload_to='imagenes/proyectos/', null=True, verbose_name='foto')
-    
+    objects = models.Manager()
+    activos = ProyectoManager()
+       
     def __str__(self):
         return f"{self.nombre} - {self.categoria}"
 
     def delete(self, using=None, keep_parents=False):
         self.foto.storage.delete(self.foto.name)  # borrado fisico
         super().delete()
+    
+    def SetInactivos(self):
+        self.estado =False
+        self.save()
+    
+    def SetActivos(self):
+        self.estado =True
+        self.save()
     
     def obtener_baja_url(self):
         return reverse_lazy('proyecto_baja', args=[self.id_proyecto])
@@ -152,12 +193,19 @@ class Proyecto(Cuerpo):
 
     class Meta:
         verbose_name_plural = "Proyectos"
+        ordering = ["-fecha_creacion"]
     
+class ColaboracionManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(estado = True)    
+
 class Colaboracion(Cuerpo):
     id_colaboracion = models.BigAutoField(verbose_name='id_colaboracion', primary_key=True, auto_created=True)
     categoria = models.ForeignKey(CategoriaColaboraciones, on_delete=models.CASCADE)
     personas = models.ManyToManyField(Personas, through='Participaciones')
     foto = models.ImageField(upload_to='imagenes/colaboraciones', null=True, verbose_name='foto')
+    objects = models.Manager()
+    ultimacolaboracion = ColaboracionManager()    
 
     def __str__(self):
         return f"{self.nombre} - {self.categoria}"
@@ -170,6 +218,7 @@ class Colaboracion(Cuerpo):
 
     class Meta:
         verbose_name_plural = "Colaboraciones"
+        ordering = ["-fecha_creacion"]
 
 class Participaciones(models.Model):
     fecha_participacion = models.DateField(auto_now_add=True, verbose_name='Fecha de creacion')
