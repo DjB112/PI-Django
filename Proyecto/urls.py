@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from administracion.admin import sitio_admin
 
 urlpatterns = [
+    path('webadmin/',sitio_admin.urls),
     path('admin/', admin.site.urls),
     path('',include('portal.urls')),
     path('administracion/',include('administracion.urls'))

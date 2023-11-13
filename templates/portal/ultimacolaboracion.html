@@ -1,0 +1,9 @@
+{% extends "portal/portal_base.html" %}
+{%load static%}
+{%block titulo %}Cartera de Proyectos - Ultima Colaboración{% endblock titulo %}
+{%block contenido_principal%}
+    {%include "portal/banner.html"%}
+    <main class="container mb-3">
+        <h2>Proyectos Colaboración {{codigo}}</h2>
+    </main>    
+{% endblock contenido_principal%}
