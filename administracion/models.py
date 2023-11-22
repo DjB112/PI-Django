@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 class NovedadesManager(models.Manager):
     def cantidad(self):
@@ -57,6 +58,7 @@ class DisenadoresManager(models.Manager):
         return super().get_queryset().filter(estado = True)
 
 class Personas(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     id_personas = models.BigAutoField(verbose_name='id_persona',primary_key=True,auto_created=True)
     nombre = models.CharField(verbose_name='nombre', max_length=100, null=False, blank=False)
     apellido = models.CharField(verbose_name='apellido', max_length=150, null=False, blank=False)
@@ -64,7 +66,7 @@ class Personas(models.Model):
     dni = models.CharField(verbose_name='dni',null=False,max_length=50,blank=False)
     email= models.EmailField(verbose_name='email', null=False, max_length=100)
     estado=models.BooleanField(verbose_name='Diseñador',default=False,null=False)
-    foto_perfil = models.ImageField(upload_to='imagenes/perfiles/', null=True, blank=True, default="", verbose_name='foto_perfil')
+    foto_perfil = models.ImageField(upload_to='imagenes/perfiles/', default="avatar.jpg" ,null=True, blank=True, verbose_name='foto_perfil')
     objects = models.Manager()
     disenadores = DisenadoresManager()
     
@@ -191,11 +193,23 @@ class Proyecto(Cuerpo):
     def obtener_comentarios_url(self):
         return reverse_lazy('comentarios_proyecto', args=[self.id_proyecto])
 
+    def misproyectos_baja_url(self):
+        return reverse_lazy('misproyectos_baja', args=[self.id_proyecto])
+
+    def misproyectos_modificacion_url(self):
+        return reverse_lazy('misproyectos_editar', args=[self.id_proyecto])
+    
+    def misproyectos_comentarios_url(self):
+        return reverse_lazy('comentarios_proyecto', args=[self.id_proyecto])
+
     class Meta:
         verbose_name_plural = "Proyectos"
         ordering = ["-fecha_creacion"]
     
 class ColaboracionManager(models.Manager):
+    def cantidad(self):
+        return self.count()
+    
     def get_queryset(self):
         return super().get_queryset().filter(estado = True)    
 
@@ -216,6 +230,12 @@ class Colaboracion(Cuerpo):
     def obtener_modificacion_url(self):
         return reverse_lazy('colaboracion_editar', args=[self.id_colaboracion])
 
+    def miscolaboraciones_baja_url(self):
+        return reverse_lazy('miscolaboraciones_baja', args=[self.id_colaboracion])
+
+    def miscolaboraciones_modificacion_url(self):
+        return reverse_lazy('miscolaboraciones_editar', args=[self.id_colaboracion])
+    
     class Meta:
         verbose_name_plural = "Colaboraciones"
         ordering = ["-fecha_creacion"]

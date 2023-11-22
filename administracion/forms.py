@@ -28,17 +28,17 @@ class PersonasForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese solo texto'})
     )
     apellido = forms.CharField(
-        label='Nombre:',
+        label='Apellido:',
         required=True,
         validators=(solo_caracteres,),
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese solo texto'})
     )
     class Meta:    
         model = Personas
-        fields = ("nombre", "apellido",'fnac','dni','email','estado','foto_perfil')
+        fields = ('nombre', 'apellido','fnac','dni','email','estado','foto_perfil')
         widgets = {
             'fnac': forms.DateInput(attrs={'class':'form-control','placeholder':'DD/MM/AAAA'}),
-            'dni': forms.NumberInput(attrs={'class':'form-control'}),
+            'dni': forms.TextInput(attrs={'class':'form-control'}),
             'email': forms.EmailInput(attrs={'class':'form-control'}),
         }
         

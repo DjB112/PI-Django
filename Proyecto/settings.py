@@ -138,6 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuracion para el envio de email por medio de GMAIL
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS")
@@ -145,3 +146,7 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 # Clave generada desde la configuracion de Google
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 RECIPIENT_ADDRESS = config("RECIPIENT_ADDRESS")
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = "indice"
+LOGOUT_REDIRECT_URL = "indice"

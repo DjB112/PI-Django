@@ -2,41 +2,19 @@ from typing import Any
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpRequest
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from datetime import datetime, date
 from django.urls import reverse_lazy
 from administracion.forms import NovedadesForm, PersonasForm, ComentariosForm, CategoriaFormProyectos,CategoriaFormColaboraciones, ProyectosForm, ColaboracionForm
-from administracion.models import Novedades, Personas, Colaboracion, Comentarios, Proyecto, CategoriaProyectos,CategoriaColaboraciones
+from administracion.models import Participaciones, Novedades, Personas, Colaboracion, Comentarios, Proyecto, CategoriaProyectos,CategoriaColaboraciones
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-def registrar(request):
 
-    if request.method=='GET':
-        formulario_consultas = PersonasForm()
-    elif request.method=='POST':
-        formulario_consultas = PersonasForm(request.POST,request.FILES)
-        if formulario_consultas.is_valid():
-            nombre= formulario_consultas.cleaned_data['nombre']
-            apellido=formulario_consultas.cleaned_data['apellido']
-            fnac=formulario_consultas.cleaned_data['fnac']
-            dni=formulario_consultas.cleaned_data['dni']
-            email=formulario_consultas.cleaned_data['email']
-            estado=formulario_consultas.cleaned_data['estado']
-            foto_perfil=formulario_consultas.cleaned_data['foto_perfil']
-            nueva_persona = Personas(nombre=nombre, apellido=apellido, fnac= fnac, dni=dni, email=email,estado=estado,foto_perfil=foto_perfil)
-            nueva_persona.save()
-            messages.success(request,"Hemos recibido su registro. Gracias")
-    else:
-        messages.error(request,"Por favor revisa los errores en el Formulario")
-    
-    respuesta = render(request,"administracion/registrar.html", {"formulario_personas": formulario_consultas})
-    return respuesta
-
-def sesion(request):
-    respuesta = render(request,"administracion/sesion.html")
-    return respuesta
-
+@login_required(login_url="proyecto_loguin")
 def administracion(request):
     variable = 'Contenido de la Pagina de Inicio desde Variable del view'
     respuesta = render(request,"administracion/index.html", {'variable': variable})
@@ -45,6 +23,47 @@ def administracion(request):
 def busqueda(request):
     respuesta = render(request,"administracion/busqueda.html")
     return respuesta
+
+def registrarperfil(request):
+    nno = request.user.id
+    kio = request.user.username
+    existe_perfil = Personas.objects.filter(user_id=nno).exists()
+    
+    if existe_perfil :      
+        # Se requiere mostrar y editar el existente
+        cont=Personas.objects.get(user_id=nno)
+        if (request.method == 'POST'):
+            formulario = PersonasForm(request.POST, request.FILES, instance=cont)
+            if formulario.is_valid():                
+                formulario.save()
+                messages.success(request, 'Se ha editado el curso correctamente')
+                # return redirect('miperfil_index')
+        else:
+            formulario = PersonasForm(instance=cont)
+    else:
+        # Se requiere crear un perfil de cero
+        if (request.method == 'POST'):
+            formulario = PersonasForm(request.POST, request.FILES)
+            if formulario.is_valid():               
+                nombre = formulario.cleaned_data.get('nombre')
+                apellido =formulario.cleaned_data.get('apellido')
+                fnac = formulario.cleaned_data.get('fnac')
+                dni = formulario.cleaned_data.get('dni')
+                email = formulario.cleaned_data.get('email')
+                estado = formulario.cleaned_data.get('estado')
+                foto_perfil = formulario.cleaned_data.get('foto_perfil')
+                
+                miperfil = Personas(user_id= nno, nombre=nombre, apellido=apellido, fnac=fnac, dni=dni, email=email, estado=estado, foto_perfil=foto_perfil)
+                miperfil.save()
+                messages.success(request, 'Se ha creado el perfil correctamente')
+                # return redirect('miperfil_index')
+        else:
+            formulario = PersonasForm()
+            
+                      
+    return render(request, 'administracion/miperfil/alta_modificacion.html', {'form': formulario})
+
+
 
 class NovedadListView(ListView):
     model = Novedades
@@ -368,3 +387,146 @@ class ComentarioProyectoDeleteView(DeleteView):
 
     def get_success_url(self, **kwargs):   
             return reverse_lazy('comentarios_proyecto', kwargs={'pk': self.object.nro_proyecto_id})    
+
+class MisProyectosListView(ListView):
+    model = Proyecto
+    template_name = 'administracion/misproyectos/index.html'
+    context_object_name ="object_list"
+    # idpersona = Personas.objects.filter()
+    
+    def get_queryset(self):
+        # fuy = Personas.objects.get(user=self.request.user).id_personas
+        try:
+            fuy = Personas.objects.get(user=self.request.user).id_personas    
+            val = Proyecto.objects.filter(personas_id= fuy)
+        except Personas.DoesNotExist:
+            val = None
+        return val 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            fuy = Personas.objects.get(user=self.request.user).id_personas    
+            val = Proyecto.objects.filter(personas_id= fuy)
+            context['titulo'] = "Mis Proyectos"
+            context['url_alta'] = reverse_lazy('misproyectos_alta')
+        except Personas.DoesNotExist:
+            context['titulo'] = "Mis Proyectos: Debe Primero Cargar su Perfil"
+            # context['url_alta'] = reverse_lazy('misproyectos_alta')      
+        return context
+
+class MisProyectosCreateView(CreateView):
+    model = Proyecto
+    form_class = ProyectosForm
+    template_name = 'administracion/misproyectos/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('misproyectos_index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Nuevo Proyecto"
+        
+        try:
+            personas = Personas.objects.get(user=self.request.user).id_personas
+        except Personas.DoesNotExist:
+            context= None
+            
+        return context
+
+class MisProyectosUpdateView(UpdateView):
+    model = Proyecto
+    form_class = ProyectosForm
+    template_name = 'administracion/misproyectos/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('misproyectos_index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Modificar Proyecto"
+        
+        try:
+            personas = Personas.objects.get(user=self.request.user).id_personas
+        except Personas.DoesNotExist:
+            context= None
+            
+        return context
+
+class MisProyectosDeleteView(DeleteView):
+    model = Proyecto
+    template_name = 'administracion/misproyectos/baja.html'
+    success_url = reverse_lazy('misproyectos_index')
+    
+    
+class MisColaboracionesListView(ListView):
+    model = Colaboracion
+    template_name = 'administracion/miscolaboraciones/index.html'
+    context_object_name ="object_list"
+    # idpersona = Personas.objects.filter()
+    
+    def get_queryset(self):
+        # fuy = Personas.objects.get(user=self.request.user).id_personas
+        try:
+            fuy = Personas.objects.get(user=self.request.user).id_personas    
+            ret = Participaciones.objects.get(persona_id=fuy).colaboracion_id
+            val = Colaboracion.objects.filter(id_colaboracion = ret)
+        except Personas.DoesNotExist:
+            val = None
+        except Participaciones.DoesNotExist:
+            val = None
+        return val 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            fuy = Personas.objects.get(user=self.request.user).id_personas    
+            ret = Participaciones.objects.get(persona_id=fuy).colaboracion_id
+            val = Colaboracion.objects.filter(id_colaboracion = ret)
+            context['titulo'] = "Mis Colaboraciones"
+            context['url_alta'] = reverse_lazy('miscolaboraciones_alta')
+        except Personas.DoesNotExist:
+            context['titulo'] = "Mis Colaboraciones: Debe Primero Cargar su Perfil"
+            # context['url_alta'] = reverse_lazy('misproyectos_alta')
+        except Participaciones.DoesNotExist:
+            context['titulo'] = "Mis Colaboraciones"      
+        return context
+
+class MisColaboracionesCreateView(CreateView):
+    model = Colaboracion
+    form_class = ColaboracionForm
+    template_name = 'administracion/miscolaboraciones/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('miscolaboraciones_index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Nueva Colaboración"
+        
+        try:
+            personas = Personas.objects.get(user=self.request.user).id_personas
+        except Personas.DoesNotExist:
+            context= None
+            
+        return context   
+
+class MisColaboracionesUpdateView(UpdateView):
+    model = Colaboracion
+    form_class = ColaboracionForm
+    template_name = 'administracion/miscolaboraciones/alta_modificacion.html'
+    context_object_name="object_list"
+    success_url = reverse_lazy('miscolaboraciones_index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Modificar Colaboración"
+        
+        try:
+            personas = Personas.objects.get(user=self.request.user).id_personas
+        except Personas.DoesNotExist:
+            context= None
+            
+        return context
+
+class MisColaboracionesDeleteView(DeleteView):
+    model = Colaboracion
+    template_name = 'administracion/miscolaboraciones/baja.html'
+    success_url = reverse_lazy('miscolaboraciones_index')

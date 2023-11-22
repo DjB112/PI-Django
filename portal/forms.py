@@ -1,5 +1,9 @@
 from django import forms
 from django.forms import ValidationError
+from administracion.forms import PersonasForm
+from administracion.models import Personas
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 import re
 
 # Realizo una validacion sobre los campos que solo pueden ser letras
@@ -93,3 +97,8 @@ class ConsultaForm (forms.Form):
             msg = f"{nombre}, para colaborar o presentar proyectos debe tener como minimo 18 Años"
             self.add_error('edad',msg)
             raise ValidationError(msg)
+
+class RegistrarUsuarioForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']

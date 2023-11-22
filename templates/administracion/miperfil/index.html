@@ -1,0 +1,87 @@
+{% extends 'administracion/base.html' %}
+
+{% block titulo %}Inicio ADMIN{% endblock%}
+
+{% block contenido %}
+<h1>Pagina Admin</h1>
+    <div class="col w-25 align-self-center text-center">
+        <!-- -------------------Si existen mensajes de error los muestro en un div anterior al formulario---------------- --> 
+        {% for mensaje in messages  %}
+            <div class="alert-{{mensaje.tags}} text-center">
+                {{mensaje}}
+            </div>        
+        {% endfor %}
+    </div>
+    {% if contexto.respuesta != 'si' %}  
+        <div class="col-6 text-start">                                           
+        <!-- -------------------Arranca el formulario de contacto---------------- -->
+            <form id="form_contacto" name="form_contacto" action="{% url 'miperfil_index' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Nombre:</label>                         
+                            <input type="text" id="{{formulario_personas.nombre.auto_id }}" name="{{formulario_personas.nombre.name}}" value="{{ formulario_personas.nombre}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.nombre.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Apellido:</label>                         
+                            <input type="text" id="{{formulario_personas.apellido.auto_id }}" name="{{formulario_personas.apellido.name}}" value="{{ formulario_personas.apellido}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.apellido.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Fecha de Nac.:</label>                         
+                            <input type="text" id="{{formulario_personas.fnac.auto_id }}" name="{{formulario_personas.fnac.name}}" value="{{ formulario_personas.fnac}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.fnac.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">DNI:</label>                         
+                            <input type="text" id="{{formulario_personas.dni.auto_id }}" name="{{formulario_personas.dni.name}}" value="{{ formulario_personas.dni}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.dni.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Email:</label>                         
+                            <input type="text" id="{{formulario_personas.email.auto_id }}" name="{{formulario_personas.email.name}}" value="{{ formulario_personas.email}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.email.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Estado:</label>                         
+                            <input type="checkbox" id="{{formulario_personas.estado.auto_id }}" name="{{formulario_personas.estado.name}}" value="{{ formulario_personas.estado}}" class="form-group" checked/>              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.estado.errors}}</div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label">Foto de Perfil:</label>                         
+                            <input type="text" id="{{formulario_personas.foto_perfil.auto_id }}" name="{{formulario_personas.foto_perfil.name}}" value="{{ formulario_personas.foto_perfil}}" class="form-group" />              
+                        </div>
+                    </div>
+                    <div class="error">{{formulario_personas.foto_perfil.errors}}</div>
+                </div>                            
+                <div class="text-center text-md-left mb-3">
+                    <button class="btn btn-primary btn-sm" type="submit">Enviar</button>
+                </div>
+            </form>
+        <!-- -------------------Termina el formulario de contacto---------------- -->
+        </div>
+    {% endif %}
+{% endblock %}
+
+    
