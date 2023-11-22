@@ -1,9 +1,7 @@
 from django.urls import path
 from . import views as administracion_views
 
-urlpatterns = [
-    path('registrar/',administracion_views.registrar,name="registrar"),
-    path('sesion/', administracion_views.sesion, name="sesion"),        
+urlpatterns = [      
     path('busqueda/', administracion_views.busqueda,name="busqueda"),
     # Seccion Administracion
     path('',administracion_views.administracion, name="administracion"),
@@ -38,5 +36,17 @@ urlpatterns = [
     path('colaboraciones/',administracion_views.ColaboracionListView.as_view(),name="colaboraciones_index"),
     path('colaboraciones/nuevo/', administracion_views.ColaboracionCreateView.as_view(),name="colaboracion_alta"),
     path('colaboraciones/editar/<int:pk>',administracion_views.ColaboracionUpdateView.as_view(),name="colaboracion_editar"),
-    path('colaboraciones/baja/<int:pk>',administracion_views.ColaboracionDeleteView.as_view(),name="colaboracion_baja"), 
+    path('colaboraciones/baja/<int:pk>',administracion_views.ColaboracionDeleteView.as_view(),name="colaboracion_baja"),
+    # Mi Proyecto
+    path('misproyectos/',administracion_views.MisProyectosListView.as_view(),name="misproyectos_index"),     
+    path('misproyectos/nuevo/', administracion_views.MisProyectosCreateView.as_view(),name="misproyectos_alta"),   
+    path('misproyectos/editar/<int:pk>', administracion_views.MisProyectosUpdateView.as_view(),name="misproyectos_editar"),
+    path('misproyectos/baja/<int:pk>',administracion_views.MisProyectosDeleteView.as_view(),name="misproyectos_baja"),
+    # Mi Colaboracion
+    path('miscolaboraciones/',administracion_views.MisColaboracionesListView.as_view(),name="miscolaboraciones_index"),
+    path('miscolaboraciones/nuevo/', administracion_views.MisColaboracionesCreateView.as_view(),name="miscolaboraciones_alta"),
+    path('miscolaboraciones/editar/<int:pk>', administracion_views.MisColaboracionesUpdateView.as_view(),name="miscolaboraciones_editar"),
+    path('miscolaboraciones/baja/<int:pk>',administracion_views.MisColaboracionesDeleteView.as_view(),name="miscolaboraciones_baja"),
+
+    path('miperfil/', administracion_views.registrarperfil,name="miperfil_index"),
 ]

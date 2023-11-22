@@ -19,11 +19,18 @@
             <li><a href="{% url "busqueda" %}" class="nav-link px-2 link-secondary text-white">Busqueda</a></li>
             <li><a href="{% url "colaboracion" %}" class="nav-link px-2 link-secondary text-white">Colaboracion</a></li>
             <li><a href="{% url "nosotros" %}" class="nav-link px-2 link-secondary text-white">Nosotros</a></li>
-            <li><a href="{% url "administracion" %}" class="nav-link px-2 link-secondary text-white">Panel de Usuario</a></li>
+            {% if user.is_authenticated %}    
+                <li><a href="{% url "administracion" %}" class="nav-link px-2 link-secondary text-white">Panel de Usuario</a></li>
+            {% endif %}
         </ul>
         <div class="col-md-4 text-end">
-            <a type="button" href="{% url "sesion" %}" class="btn btn-outline-primary me-2 btn-sm">Iniciar Sesión</a>
-            <a type="button" href="{% url "registrar" %}" class="btn btn-outline-primary me-2 btn-sm">Registrarse</a>
+            {% if user.is_authenticated %}
+                <p type="text" style="display: inline" class="text-white">Bienvenido\a, {{ user.username }}. </p>
+                <a type="button" href="{% url "logout" %}" class="btn btn-outline-primary me-2 btn-sm">Cerrar Sesion</a>
+            {% else %}
+                <a type="button" href="{% url "login" %}" class="btn btn-outline-primary me-2 btn-sm">Iniciar Sesión</a>
+                <a type="button" href="{% url "registrar" %}" class="btn btn-outline-primary me-2 btn-sm">Registrarse</a>
+            {% endif %}
         </div>
     </div>
     </div>

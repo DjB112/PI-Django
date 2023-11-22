@@ -1,11 +1,17 @@
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from datetime import datetime, date
-from portal.forms import ConsultaForm
+from portal.forms import ConsultaForm, RegistrarUsuarioForm
 from administracion.models import Novedades, Proyecto, Colaboracion
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LogoutView
+from administracion.forms import PersonasForm
+from administracion.models import Personas
    
 # Define una función para calcular la diferencia entre la fecha actual y la fecha de cada registro
 def diferencia_fecha(registro):
@@ -13,18 +19,33 @@ def diferencia_fecha(registro):
     fecha_actual = date.today()
     return abs(registro["fecha"] - fecha_actual)
 
-def indice(request):
-    # Selecciona los primeros 4 registros
+def fun_banner():
+    # Selecciona las ultimas 4 novedades
     if (Proyecto.activos.cantidad()>4):
         proyectos_nuevos = Proyecto.activos.all()[:4]
-    else:
+    elif (Proyecto.activos.cantidad()>0):
         proyectos_nuevos = Proyecto.activos.all()
+    else:
+        proyectos_nuevos = None
+    # Verificamos que exista alguna novedad
+    if (Novedades.novedades.cantidad()>0):    
+        reg_nov = Novedades.novedades.all()
+    else:
+        reg_nov = None
+    # Selecciona la colaboracion mas nueva
+    if (Colaboracion.ultimacolaboracion.cantidad()>0):
+        reg_col = Colaboracion.ultimacolaboracion.all().order_by('-id_colaboracion')[0]
+    else:
+        reg_col = None
         
-    reg_nov = Novedades.novedades.all()
+    return proyectos_nuevos, reg_nov, reg_col
     
-    reg_col = Colaboracion.ultimacolaboracion.all().order_by('-id_colaboracion')[0]
-    # nombre_col = reg_col.nombre
-    
+def indice(request):
+    resultado = fun_banner()
+    proyectos_nuevos = resultado[0]
+    reg_nov = resultado[1]
+    reg_col = resultado[2]
+        
     respuesta = render(request,"portal/index.html",{"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
     return respuesta
 
@@ -34,13 +55,24 @@ def proyecto(request, nro_proyecto):
     return respuesta
 
 def colaboracion(request):
-        
-    respuesta = render(request,"portal/colaboracion.html")
+    resultado = fun_banner()
+    proyectos_nuevos = resultado[0]
+    reg_nov = resultado[1]
+    reg_col = resultado[2]    
+    respuesta = render(request,"portal/colaboracion.html",{"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
     return respuesta
 
 def ultimacolaboracion(request,nro_colaboracion):
+    resultado = fun_banner()
+    proyectos_nuevos = resultado[0]
+    reg_nov = resultado[1]
+    reg_col = resultado[2]           
+    respuesta = render(request,"portal/ultimacolaboracion.html", {"codigo": nro_colaboracion, "proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+    return respuesta
+
+def novedad(request,nro_novedad):
         
-    respuesta = render(request,"portal/ultimacolaboracion.html", {"codigo": nro_colaboracion})
+    respuesta = render(request,"portal/novedad.html", {"codigo": nro_novedad})
     return respuesta
 
 def busqueda(request):
@@ -48,6 +80,11 @@ def busqueda(request):
     return respuesta
 
 def nosotros(request):
+    resultado = fun_banner()
+    proyectos_nuevos = resultado[0]
+    reg_nov = resultado[1]
+    reg_col = resultado[2]  
+    
     formulario_consultas = None
     respuesta=None
     sector= ('Seleccionar','Administracion','Colaboracion','Proyectos')
@@ -94,4 +131,41 @@ def nosotros(request):
         'respuesta' : respuesta
     }
     
-    return render(request,"portal/nosotros.html",{"contexto": contexto})
+    return render(request,"portal/nosotros.html",{"contexto": contexto,"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+
+def proyecto_login(request):
+    if request.method == 'POST':
+        # AuthenticationForm_can_also_be_used__
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            form = login(request, user)
+            messages.success(request, f' Bienvenido/a {username} !!')
+            return redirect('indice')
+        else:
+            messages.error(request, f'Cuenta o password incorrecto, realice el login correctamente')
+    form = AuthenticationForm()
+    return render(request, 'portal/login.html', {'form': form, 'title': 'Log in'})
+
+class ProyectoLogoutView(LogoutView):
+    next_page = 'indice'
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        messages.add_message(request, messages.INFO, 'Se ha cerrado la session correctamente.')
+        return response
+    
+def registrarse(request):
+    if request.method == 'POST':
+        form = RegistrarUsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # username = form.cleaned_data.get('username')
+            # email = form.cleaned_data.get('email')       
+            messages.success(
+                request, f'Tu cuenta fue creada con éxito! No te olvides de completar tu Perfil desde el Panel. Ya te podes loguear en el sistema.')
+            return redirect('login')
+    else:
+        form = RegistrarUsuarioForm()
+    return render(request, 'portal/registrar.html', {'form': form, 'title': 'registrese aquí'})

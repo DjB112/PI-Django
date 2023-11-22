@@ -1,5 +1,6 @@
 from django.contrib import admin
 from administracion.models import Novedades ,Personas,CategoriaProyectos,CategoriaColaboraciones,Proyecto,Colaboracion,Comentarios,Participaciones
+from django.contrib.auth.models import User 
 # Register your models here.
 
 admin.site.register(Personas),
