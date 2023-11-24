@@ -85,6 +85,11 @@
   box-sizing: border-box;
 }
 
+img.logo-nav {
+  max-width: none !important;
+  width: 50px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;

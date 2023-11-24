@@ -1,13 +1,12 @@
 {% extends "portal/portal_base.html" %}
 {%load static%}
-{%block titulo %}Cartera de Proyectos - Colaboración{% endblock titulo %}
+{%block titulo %}Cartera de Proyectos{% endblock titulo %}
 {%block contenido_principal%}
-    {%include "portal/banner.html"%}
-    <main class="container mb-1">
-        <h2>Proyectos Colaboración</h2>
+    <main class="container mb-3 mt-4">
+        <h2>Proyectos</h2>
     </main>
     <div class="row row-cols mx-auto">
-        {% for  campo in  col_objeto %}
+    {% for  campo in  pro_objeto %}
             <div class="col">
               <div class="card shadow-sm">
                 <img class="rounded mx-auto d-block pt-2" width="250" height="250" src="{{ campo.foto.url }}" alt="Imagen">
@@ -16,14 +15,13 @@
                     <p class="card-text">{{campo.categoria}}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <p><a class="btn btn-primary btn-sm" href="{% url 'ultimacolaboracion' campo.id_colaboracion %}">Mas Detalles &raquo;</a></p>
+                      <p><a class="btn btn-primary btn-sm" href="{% url 'proyecto' campo.id_proyecto %}">Mas Detalles &raquo;</a></p>
                     </div>
                     <small class="text-body-secondary">{{campo.fecha_creacion}}</small>
                   </div>
                 </div>
               </div>
             </div>
-        {% endfor %}    
-    </div>            
-            
+    {% endfor %}
+    </div>
 {% endblock contenido_principal%}

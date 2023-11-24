@@ -10,6 +10,7 @@ urlpatterns = [
     path('colaboracion/', portal_views.colaboracion,name="colaboracion"),
     path('ultimacolaboracion/<int:nro_colaboracion>', portal_views.ultimacolaboracion,name="ultimacolaboracion"),
     path('novedad/<int:nro_novedad>', portal_views.novedad,name="novedad"),
+    path('busqueda/', portal_views.busqueda, name="busqueda"),
     # path('cuentas/login/',portal_views.proyecto_login, name="proyecto_login"),
     # path('cuentas/logout/',portal_views.ProyectoLogoutView.as_view(),name="proyecto_logout"),
     # path('cuentas/logout/',auth_views.LogoutView.as_view(template_name="indice"),name="proyecto_logout"),

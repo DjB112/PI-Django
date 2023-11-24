@@ -6,24 +6,30 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpRequest
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
-from datetime import datetime, date
 from django.urls import reverse_lazy
 from administracion.forms import NovedadesForm, PersonasForm, ComentariosForm, CategoriaFormProyectos,CategoriaFormColaboraciones, ProyectosForm, ColaboracionForm
 from administracion.models import Participaciones, Novedades, Personas, Colaboracion, Comentarios, Proyecto, CategoriaProyectos,CategoriaColaboraciones
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User,Group
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
+def grupo_requerido(*grupo_nombre):
+    """ Grupo, checar si pertenece a grupo """
+    def check(user):
+        if user.groups.filter(name__in=grupo_nombre).exists() | user.is_superuser:
+            return True
+        else:
+            return False
+    # Si no se pertenece al grupo, redirigir a /prohibido/
+    return user_passes_test(check, login_url='login')
 
-@login_required(login_url="proyecto_loguin")
+@grupo_requerido('registrados')
 def administracion(request):
     variable = 'Contenido de la Pagina de Inicio desde Variable del view'
     respuesta = render(request,"administracion/index.html", {'variable': variable})
     return respuesta
 
-def busqueda(request):
-    respuesta = render(request,"administracion/busqueda.html")
-    return respuesta
-
+@grupo_requerido('registrados')
 def registrarperfil(request):
     nno = request.user.id
     kio = request.user.username
@@ -34,12 +40,16 @@ def registrarperfil(request):
         cont=Personas.objects.get(user_id=nno)
         if (request.method == 'POST'):
             formulario = PersonasForm(request.POST, request.FILES, instance=cont)
-            if formulario.is_valid():                
+            if formulario.is_valid():
+                foto_perfil = formulario.cleaned_data.get('foto_perfil')
+                url_file =foto_perfil.url                
                 formulario.save()
                 messages.success(request, 'Se ha editado el curso correctamente')
                 # return redirect('miperfil_index')
         else:
             formulario = PersonasForm(instance=cont)
+            foto_perfil = cont.foto_perfil
+            url_file =foto_perfil.url
     else:
         # Se requiere crear un perfil de cero
         if (request.method == 'POST'):
@@ -52,20 +62,23 @@ def registrarperfil(request):
                 email = formulario.cleaned_data.get('email')
                 estado = formulario.cleaned_data.get('estado')
                 foto_perfil = formulario.cleaned_data.get('foto_perfil')
-                
+                url_file = None
                 miperfil = Personas(user_id= nno, nombre=nombre, apellido=apellido, fnac=fnac, dni=dni, email=email, estado=estado, foto_perfil=foto_perfil)
                 miperfil.save()
                 messages.success(request, 'Se ha creado el perfil correctamente')
                 # return redirect('miperfil_index')
         else:
             formulario = PersonasForm()
-            
+            url_file = None
                       
-    return render(request, 'administracion/miperfil/alta_modificacion.html', {'form': formulario})
+    return render(request, 'administracion/miperfil/alta_modificacion.html', {'form': formulario, 'url_file': url_file})
 
 
 
-class NovedadListView(ListView):
+class NovedadListView(PermissionRequiredMixin, ListView):
+    login_url = '/login/'
+    permission_required='administracion.add_novedades'
+    
     model = Novedades
     template_name = 'administracion/novedades/index.html'
     context_object_name ="categoria_list"
@@ -83,7 +96,10 @@ class NovedadListView(ListView):
             self.queryset = self.queryset.filter(titulo__contains=request.GET['titulo'])
         return super().get(request, *args, **kwargs)
 
-class NovedadCreateView(CreateView):
+class NovedadCreateView(PermissionRequiredMixin, CreateView):
+    login_url = '/login/'
+    permission_required='administracion.add_novedades'
+    
     model = Novedades
     form_class = NovedadesForm
     template_name = 'administracion/novedades/alta_modificacion.html'

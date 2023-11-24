@@ -13,10 +13,14 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed"  style="background-color:#669bbc">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="{% url 'administracion' %}">CAC 4.0 Admin</a>
+        {% if perms.administracion %}
+            <a class="navbar-brand ps-3" href="{% url 'administracion' %}">Panel Admin</a>
+        {% else %}
+            <a class="navbar-brand ps-3" href="{% url 'administracion' %}">Panel Usuario</a>
+        {% endif %}
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
@@ -28,10 +32,9 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Configuración</a></li>
-                    <li><a class="dropdown-item" href="#!">Actividades Log</a></li>
+                    <li><a class="dropdown-item" href="{% url 'miperfil_index' %}">Configuración</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Salir</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Salir</a></li>
                 </ul>
             </li>
         </ul>
@@ -41,49 +44,61 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Administracion</div>
+                        <div class="sb-sidenav-menu-heading">Panel de Usuario</div>
+                        
+                        {% if  perms.administracion %}
                         <a class="nav-link" href="{% url 'novedad_index' %}">
                             <div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>
                                  Novedades                       
                         </a>
+
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-bars-progress"></i></div>
                                 Categorias
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{% url 'categoriasproyecto_index'%}">De Proyectos</a>
                                 <a class="nav-link" href="{% url 'categoriascolaboracion_index'%}">De Colaboraciones</a>
                             </nav>
                         </div>
+                        
                         <a class="nav-link" href="{% url 'persona_index' %}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Personas                         
                         </a>
+                        
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts_dos" aria-expanded="false" aria-controls="collapseLayouts_dos">
                             <div class="sb-nav-link-icon"><i class="fas fa-bars-progress"></i></div>
                                 Cartera de Proyectos
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
+                        </a>                        
                         <div class="collapse" id="collapseLayouts_dos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{% url 'proyectos_index' %}">Proyectos</a>
                                 <a class="nav-link" href="{% url 'colaboraciones_index' %}">Colaboraciones</a>
                             </nav>
                         </div>
+                        {% endif %}
+
+                        {% if user.is_authenticated %}
                         <a class="nav-link" href="{% url 'miperfil_index' %}">
                             <div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>
                                  Mi Perfil                      
                         </a>
+                        
                         <a class="nav-link" href="{% url 'misproyectos_index' %}">
                             <div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>
                                  Mis Proyectos                      
                         </a>
+                        
                         <a class="nav-link" href="{% url 'miscolaboraciones_index' %}">
                             <div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>
                                  Mis Colaboraciones                     
                         </a>
+                        {% endif %}
                         <a class="nav-link" href="{% url 'indice' %}">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-reply"></i></div>
                             Ir sitio principal

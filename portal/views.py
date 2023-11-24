@@ -5,9 +5,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from datetime import datetime, date
 from portal.forms import ConsultaForm, RegistrarUsuarioForm
-from administracion.models import Novedades, Proyecto, Colaboracion
+from administracion.models import Novedades, Proyecto, Colaboracion,Comentarios
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LogoutView
 from administracion.forms import PersonasForm
@@ -50,16 +50,28 @@ def indice(request):
     return respuesta
 
 def proyecto(request, nro_proyecto):
-    
-    respuesta = render(request,"portal/proyecto.html",{"codigo": nro_proyecto})
+    pro_objeto = Proyecto.objects.filter(id_proyecto= nro_proyecto).get()
+    pro_comentario = Comentarios.objects.filter(nro_proyecto = nro_proyecto, tipo="PRO", estado=True)
+    try:
+        respuesta = render(request,"portal/proyecto.html",{"pro_comentario": pro_comentario, "pro_objeto": pro_objeto})
+    except Comentarios.DoesNotExist:
+        respuesta = render(request,"portal/proyecto.html",{"pro_objeto": pro_objeto})
     return respuesta
 
+def busqueda(request):
+
+    pro_objeto=Proyecto.objects.filter(estado=True)
+    respuesta = render(request,"portal/busqueda.html",{"pro_objeto": pro_objeto})
+    return respuesta
+    
 def colaboracion(request):
     resultado = fun_banner()
     proyectos_nuevos = resultado[0]
     reg_nov = resultado[1]
     reg_col = resultado[2]    
-    respuesta = render(request,"portal/colaboracion.html",{"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+    col_objeto=Colaboracion.objects.filter(estado=True)
+
+    respuesta = render(request,"portal/colaboracion.html",{"proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov, "col_objeto": col_objeto})
     return respuesta
 
 def ultimacolaboracion(request,nro_colaboracion):
@@ -67,16 +79,20 @@ def ultimacolaboracion(request,nro_colaboracion):
     proyectos_nuevos = resultado[0]
     reg_nov = resultado[1]
     reg_col = resultado[2]           
-    respuesta = render(request,"portal/ultimacolaboracion.html", {"codigo": nro_colaboracion, "proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+    
+    col_objeto = Colaboracion.objects.filter(id_colaboracion= nro_colaboracion).get()
+    col_comentario = Comentarios.objects.filter(nro_proyecto = nro_colaboracion, tipo="COL", estado=True)
+    try:
+        respuesta = render(request,"portal/ultimacolaboracion.html",{"col_comentario": col_comentario, "col_objeto": col_objeto, "proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+    except Comentarios.DoesNotExist:
+        respuesta = render(request,"portal/ultimacolaboracion.html",{"col_objeto": col_objeto, "proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
+    
+    # respuesta = render(request,"portal/ultimacolaboracion.html", {"codigo": nro_colaboracion, "proyectos_nuevos": proyectos_nuevos,"ultima_colaboracion": reg_col,"object_list":reg_nov})
     return respuesta
 
 def novedad(request,nro_novedad):
         
     respuesta = render(request,"portal/novedad.html", {"codigo": nro_novedad})
-    return respuesta
-
-def busqueda(request):
-    respuesta = render(request,"portal/busqueda.html")
     return respuesta
 
 def nosotros(request):
@@ -160,7 +176,10 @@ def registrarse(request):
     if request.method == 'POST':
         form = RegistrarUsuarioForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            # user = User.objects.get(username=user.username)
+            group = Group.objects.get(name='registrados')
+            user.groups.add(group)
             # username = form.cleaned_data.get('username')
             # email = form.cleaned_data.get('email')       
             messages.success(

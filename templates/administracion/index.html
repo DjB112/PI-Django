@@ -1,13 +1,48 @@
 {% extends 'administracion/base.html' %}
-
-{% block titulo %}Inicio ADMIN{% endblock%}
+{% load static %}
+{% block titulo %}Inicio Panel de Usuario{% endblock%}
 
 {% block contenido %}
-<h1>Pagina Admin</h1>
-<p>
-    <h3>Contenido desde Vista</h3>
-    <h5>{{variable}}</h5>
-</p>
+
+<main>
+    <div class="container py-1">
+      <header class="pb-1 mb-1 border-bottom">
+        <div class="d-flex align-items-center text-body-emphasis text-decoration-none">
+            <img src="{% static 'portal/img/logo.png' %}" height="80" with="auto" class="logo-nav" alt="">
+            <ul>
+            <li> <span class="fs-3 fw-bold">Cartera de Proyectos</span> </li>
+            <li> {{variable}}</li>
+            </ul>
+        </div>
+      </header>
+  
+      <div class="p-1 mb-1 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-1">
+          <h3 class="display-6 fw-bold">Novedades del Panel</h3>
+          <p class="col-md-12 fs-4">{% lorem how_many_paragraphs %}</p>
+          <button class="btn btn-primary btn-sm" type="button">Ver Mass ..</button>
+        </div>
+      </div>
+  
+      <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+          <div class="h-100 p-2 text-bg-dark rounded-3">
+            <h2>Cuentas Especiales</h2>
+            <p>{% lorem how_many_paragraphs %}</p>
+            <button class="btn btn-outline-light btn-sm" type="button">Ver Mass ..</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 p-2 bg-body-tertiary border rounded-3">
+            <h2>Ideas Para Mejorar</h2>
+            <p>{% lorem how_many_paragraphs %}</p>
+            <button class="btn btn-outline-secondary btn-sm" type="button">Ver Mass ..</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
 {% endblock %}
 
     

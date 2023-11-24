@@ -2,7 +2,6 @@ from django.urls import path
 from . import views as administracion_views
 
 urlpatterns = [      
-    path('busqueda/', administracion_views.busqueda,name="busqueda"),
     # Seccion Administracion
     path('',administracion_views.administracion, name="administracion"),
     # Seccion Novedades

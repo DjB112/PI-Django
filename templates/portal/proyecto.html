@@ -3,7 +3,41 @@
 {%block titulo %}Cartera de Proyectos - Proyecto{% endblock titulo %}
 {%block contenido_principal%}
     <main class="container pt-4">
-        <h2>Proyecto:</h2>
-        <h4>Proyecto Codigo: {{ codigo }}</h4>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Proyecto:{{ pro_objeto.nombre}}</h4>
+              </div>
+              <div class="card-body">
+                <img class="rounded mx-auto d-block pt-2" width="250" height="250" src="{{ pro_objeto.foto.url }}" alt="Imagen">
+                <h1 class="card-title pricing-card-title">Diseñador:<small class="text-body-secondary fw-light">{{ pro_objeto.personas}}</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>Descripción: {{ pro_objeto.descripcion}}</li>
+                  <li>Fecha de Creación: {{ pro_objeto.fecha_creacion}}</li>
+                  <li>Categoria: {{ pro_objeto.categoria}}</li>
+                </ul>
+                <button type="button" class="w-60 btn btn-lg btn-outline-primary">Contactar</button>
+                <button type="button" class="w-60 btn btn-lg btn-outline-primary">Comentar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Comentarios</h4>
+              </div>
+              {% for campo in pro_comentario  %}
+              <div class="card-body">       
+                <ul class="list-unstyled mt-1 mb-1">
+                  <li>{{ campo.id_persona}}</li>
+                  <li>{{ campo.comentario}}</li>
+                  <li>{{ campo.fecha_creacion}}</li>
+                </ul>
+                <hr>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
     </main>    
 {% endblock contenido_principal%}
