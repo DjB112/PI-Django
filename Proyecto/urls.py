@@ -24,5 +24,6 @@ urlpatterns = [
     path('webadmin/',sitio_admin.urls),
     path('admin/', admin.site.urls),
     path('',include('portal.urls')),
-    path('administracion/',include('administracion.urls'))
+    path('administracion/',include('administracion.urls')),
+    path('api/', include('pr_api.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
